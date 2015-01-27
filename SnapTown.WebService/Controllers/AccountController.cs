@@ -19,7 +19,7 @@ using SnapTown.WebService.Results;
 
 namespace SnapTown.WebService.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {

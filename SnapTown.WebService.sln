@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.WebService", "SnapTown.WebService\SnapTown.WebService.csproj", "{76B3A0D3-048E-4D24-A63B-4F2ADE16A224}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.Models", "SnapTown.Models\SnapTown.Models.csproj", "{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.DAL", "SnapTown.DAL\SnapTown.DAL.csproj", "{EC093DE1-DFD4-463D-8D42-5F88D8545C51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{76B3A0D3-048E-4D24-A63B-4F2ADE16A224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76B3A0D3-048E-4D24-A63B-4F2ADE16A224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76B3A0D3-048E-4D24-A63B-4F2ADE16A224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
