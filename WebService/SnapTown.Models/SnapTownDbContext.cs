@@ -18,5 +18,7 @@ namespace SnapTown.Models
         public DbSet<Media> Media { get; set; }
         public DbSet<Town> Towns { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+
     }
 }

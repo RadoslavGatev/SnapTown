@@ -11,13 +11,15 @@ namespace SnapTown.DAL
     {
         private SnapTownDbContext dbContext;
         public UnitOfWork(SnapTownDbContext dbContext, IRepository<Media> mediaRepo,
-            IRepository<Subscription> subscriptionsRepo, IRepository<User> usersRepo)
+            IRepository<Subscription> subscriptionsRepo, IRepository<User> usersRepo,
+            IRepository<Town> townsRepo)
         {
             this.dbContext = dbContext;
 
             this.Media = mediaRepo;
             this.Subscriptions = subscriptionsRepo;
             this.Users = usersRepo;
+            this.Towns = townsRepo;
         }
 
         public IRepository<Media> Media { get; private set; }
@@ -25,6 +27,8 @@ namespace SnapTown.DAL
         public IRepository<Subscription> Subscriptions { get; private set; }
 
         public IRepository<User> Users { get; private set; }
+        public IRepository<Town> Towns { get; private set; }
+
 
         public void Dispose()
         {

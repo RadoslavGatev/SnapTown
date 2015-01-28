@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.Models", "SnapTown
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.DAL", "SnapTown.DAL\SnapTown.DAL.csproj", "{EC093DE1-DFD4-463D-8D42-5F88D8545C51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.DTO", "SnapTown.DTO\SnapTown.DTO.csproj", "{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.Utils", "SnapTown.Utils\SnapTown.Utils.csproj", "{0957F5A5-2671-4F5B-84B5-671429B6ADE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC093DE1-DFD4-463D-8D42-5F88D8545C51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0957F5A5-2671-4F5B-84B5-671429B6ADE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0957F5A5-2671-4F5B-84B5-671429B6ADE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0957F5A5-2671-4F5B-84B5-671429B6ADE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0957F5A5-2671-4F5B-84B5-671429B6ADE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

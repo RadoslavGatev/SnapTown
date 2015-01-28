@@ -8,6 +8,8 @@ namespace SnapTown.DAL
         IRepository<User> Users { get; }
         IRepository<Media> Media { get; }
         IRepository<Subscription> Subscriptions { get; }
+        IRepository<Town> Towns { get; }
+
 
         /// <summary>
         /// Saves the changes.

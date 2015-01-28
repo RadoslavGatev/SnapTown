@@ -9,6 +9,8 @@ namespace SnapTown.Models
     public class User
     {
         public int UserID { get; set; }
+        public string Name { get; set; }
         public string AuthToken { get; set; }
+        public string GCMClientToken { get; set; }
     }
 }

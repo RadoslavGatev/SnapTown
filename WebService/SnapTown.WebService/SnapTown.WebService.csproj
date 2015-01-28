@@ -213,9 +213,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AutocompleteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
+    <Compile Include="Controllers\TownsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Converters\MediaConverter.cs" />
+    <Compile Include="Converters\TownConverter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -298,9 +302,17 @@
       <Project>{ec093de1-dfd4-463d-8d42-5f88d8545c51}</Project>
       <Name>SnapTown.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SnapTown.DTO\SnapTown.DTO.csproj">
+      <Project>{37d6d598-1e43-4fac-a5d0-57c097bf68eb}</Project>
+      <Name>SnapTown.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SnapTown.Models\SnapTown.Models.csproj">
       <Project>{b27e1775-f86c-4c0c-aa0a-cd3bcfb10030}</Project>
       <Name>SnapTown.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SnapTown.Utils\SnapTown.Utils.csproj">
+      <Project>{0957f5a5-2671-4f5b-84b5-671429b6ade7}</Project>
+      <Name>SnapTown.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
