@@ -1,4 +1,6 @@
-﻿using SnapTown.DAL;
+﻿using PushSharp;
+using PushSharp.Android;
+using SnapTown.DAL;
 using SnapTown.DTO;
 using SnapTown.Models;
 using SnapTown.Utils;
@@ -78,6 +80,8 @@ namespace SnapTown.WebService.Controllers
 
                             var fullPath = Path.Combine(filePath, media.Path);
                             image.Save(fullPath);
+
+                            notifyAllSubscribers(town);
                         }
                         catch (Exception e)
                         {
@@ -128,6 +132,24 @@ namespace SnapTown.WebService.Controllers
                     break;
             }
             return result;
+        }
+
+        private void notifyAllSubscribers(Town town)
+        {
+
+            var registrationIds = this.unitOfWork.Subscriptions
+                .Filter(s => s.TownID == town.TownID, new string[] { "User" })
+                .Select(s => s.User.GCMClientToken);
+            //Create our push services broker
+            var push = new PushBroker();
+
+            push.RegisterGcmService(new GcmPushChannelSettings("AIzaSyDZwSkJL1KowOSLWD9dgbJaY1qsqMTLsc8"));
+
+            push.QueueNotification(new GcmNotification().ForDeviceRegistrationId(registrationIds)
+                                  .WithJson(@"{""alert"":""Hello World!"",""badge"":7,""sound"":""sound.caf""}"));
+
+            //Stop and wait for the queues to drains
+            push.StopAllServices();
         }
     }
 }
