@@ -137,6 +137,7 @@ namespace SnapTown.WebService.Controllers
         private void notifyAllSubscribers(Town town)
         {
 
+            //TODO remove the current user
             var registrationIds = this.unitOfWork.Subscriptions
                 .Filter(s => s.TownID == town.TownID, new string[] { "User" })
                 .Select(s => s.User.GCMClientToken);
