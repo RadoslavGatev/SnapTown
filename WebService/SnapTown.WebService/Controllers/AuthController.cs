@@ -17,7 +17,7 @@ namespace SnapTown.WebService.Controllers
         }
 
         [Route("")]
-        public int Get(RegisterUserDto registerUser)
+        public int Post(RegisterUserDto registerUser)
         {
             //TODO verify facebook
 
@@ -30,9 +30,8 @@ namespace SnapTown.WebService.Controllers
             return user.UserID;
         }
 
-        //[HttpPut]
         [Route("")]
-        public void Post(RegisterUserDto registerUser)
+        public void Put(RegisterUserDto registerUser)
         {
             //TODO verify facebook
 
