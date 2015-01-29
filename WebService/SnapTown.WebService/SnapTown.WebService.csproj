@@ -251,7 +251,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\TownsController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Converters\MediaConverter.cs" />
     <Compile Include="Converters\UserConverter.cs" />
     <Compile Include="Converters\TownConverter.cs" />
