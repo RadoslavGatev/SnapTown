@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="MediaDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterUserDto.cs" />
     <Compile Include="TownDto.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
