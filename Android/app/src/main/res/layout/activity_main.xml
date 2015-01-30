@@ -9,9 +9,9 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/main_linear_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/capture_controls"
         android:orientation="vertical">
 
         <com.rado.veni.snaptown.controls.MainControlsView
@@ -26,27 +26,11 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <com.rado.veni.snaptown.controls.CaptureControlsView
         android:id="@+id/capture_controls"
-        style="?android:buttonBarStyle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <Button
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Picture" />
-
-        <Button
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Video" />
-    </LinearLayout>
+        android:layout_below="@id/main_linear_layout"
+        android:layout_alignParentBottom="true"></com.rado.veni.snaptown.controls.CaptureControlsView>
 
 </RelativeLayout>
