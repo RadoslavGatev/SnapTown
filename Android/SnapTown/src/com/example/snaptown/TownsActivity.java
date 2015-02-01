@@ -21,7 +21,7 @@ public class TownsActivity extends Activity {
         newsFeedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TownsActivity.this, MainActivity.class);
+                Intent intent = new Intent(TownsActivity.this, NewsFeedActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);

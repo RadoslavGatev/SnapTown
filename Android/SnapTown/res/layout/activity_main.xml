@@ -6,26 +6,25 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/capture_controls"
-        android:orientation="vertical" >
-
-        <com.example.snaptown.controls.MainControlsView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-        </com.example.snaptown.controls.MainControlsView>
-
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-        </ListView>
-    </LinearLayout>
-
-    <com.example.snaptown.controls.CaptureControlsView
-        android:id="@+id/capture_controls"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-    </com.example.snaptown.controls.CaptureControlsView>
+        android:orientation="vertical"
+        android:layout_centerInParent="true" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Welcome to"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Snap Town"
+            android:textSize="30sp" />
+    </LinearLayout>
 
 </RelativeLayout>

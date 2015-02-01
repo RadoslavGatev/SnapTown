@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:buttonBarStyle"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:showDividers="none" >
 
     <LinearLayout
-        android:id="@+id/main_controls_button_wrapper"
-        style="?android:buttonBarStyle"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:showDividers="none" >
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
         <Button
             android:id="@+id/news_feed_button"
             style="?android:buttonBarButtonStyle"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:text="News feed" />
 
         <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:id="@+id/main_controls_border_news_feed"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:background="@android:color/holo_blue_light" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_light" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
 
         <Button
             android:id="@+id/towns_button"
             style="?android:buttonBarButtonStyle"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:text="Towns" />
+
+        <View
+            android:id="@+id/main_controls_border_towns"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_light" />
+
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/main_controls_button_wrapper"
-        android:background="@android:color/holo_blue_light" />
-
-</RelativeLayout>
+</LinearLayout>

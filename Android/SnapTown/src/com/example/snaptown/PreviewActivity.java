@@ -67,7 +67,7 @@ public class PreviewActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, MainActivity.class);
+		Intent intent = new Intent(this, NewsFeedActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);
 		this.finish();

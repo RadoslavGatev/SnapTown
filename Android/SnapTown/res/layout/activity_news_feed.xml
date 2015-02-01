@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.snaptown.TownsActivity" >
+    tools:context="com.example.snaptown.NewsFeedActivity" >
 
     <LinearLayout
         xmlns:custom="http://schemas.android.com/apk/res/com.example.snaptown"
@@ -14,27 +14,8 @@
         <com.example.snaptown.controls.MainControlsView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            custom:selectedButton="towns" >
+            custom:selectedButton="newsFeed" >
         </com.example.snaptown.controls.MainControlsView>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/search_src_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/search_button"
-                android:hint="Search" />
-
-            <Button
-                android:id="@+id/search_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Search" />
-        </RelativeLayout>
 
         <ListView
             android:layout_width="fill_parent"
