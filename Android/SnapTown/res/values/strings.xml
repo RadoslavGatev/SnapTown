@@ -7,5 +7,10 @@
     <string name="title_activity_preview">PreviewActivity</string>
     <string name="title_activity_towns">TownsActivity</string>
     <string name="title_activity_news_feed">NewsFeedActivity</string>
+    <string name="facebook_app_id">794077860663365</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_message">In order to use the app you need to login with your Facebook account</string>
+    <string name="title_facebook_login">Facebook Login</string>
+    <string name="action_logout">Logout</string>
 
 </resources>
