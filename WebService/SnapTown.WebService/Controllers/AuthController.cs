@@ -8,10 +8,10 @@ using System.Web.Http;
 namespace SnapTown.WebService.Controllers
 {
     [RoutePrefix("api/auth")]
-    public class Auth : ApiController
+    public class AuthController : ApiController
     {
         private IUnitOfWork unitOfWork { get; set; }
-        public Auth(IUnitOfWork unitOfWork)
+        public AuthController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
