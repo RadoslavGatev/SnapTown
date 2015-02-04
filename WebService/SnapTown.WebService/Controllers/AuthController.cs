@@ -17,29 +17,24 @@ namespace SnapTown.WebService.Controllers
         }
 
         [Route("")]
-        public int Post(RegisterUserDto registerUser)
+        public void Post(RegisterUserDto registerUser)
         {
             //TODO verify facebook
 
             //register
-            var user = UserConverter.AsUser.Compile().Invoke(registerUser);
-            this.unitOfWork.Users.Create(user);
-
-            this.unitOfWork.SaveChanges();
-
-            return user.UserID;
-        }
-
-        [Route("")]
-        public void Put(RegisterUserDto registerUser)
-        {
-            //TODO verify facebook
-
-            var user = this.unitOfWork.Users.Get(u => u.UserID == registerUser.UserID &&
-                 u.AuthToken == registerUser.OldAuthToken);
-
-            user.AuthToken = registerUser.AuthToken;
-            this.unitOfWork.Users.Update(user);
+            var user = this.unitOfWork.Users.Get(u => u.FacebookId == registerUser.FacebookId);
+            if (user != null)
+            {
+                //update
+                user.AuthToken = registerUser.AuthToken;
+                this.unitOfWork.Users.Update(user);
+            }
+            else
+            {
+                //register
+                var newUser = UserConverter.AsUser.Compile().Invoke(registerUser);
+                this.unitOfWork.Users.Create(newUser);
+            }
 
             this.unitOfWork.SaveChanges();
         }

@@ -13,6 +13,7 @@ namespace SnapTown.WebService.Converters
         public static readonly Expression<Func<Media, MediaDto>> AsMediaDto =
             x => new MediaDto()
             {
+                MediaId = x.MediaID,
                 Description = x.Description,
                 Type = (byte)x.Type,
                 UploadedBy = x.Owner.Name,

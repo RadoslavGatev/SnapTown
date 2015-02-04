@@ -9,9 +9,9 @@ namespace SnapTown.DTO
 {
     public class MediaDto
     {
+        public int MediaId { get; set; }
         public string Description { get; set; }
         public byte Type { get; set; }
-
         public DateTime UploadedOn { get; set; }
         public string UploadedBy { get; set; }
     }

@@ -10,6 +10,7 @@ namespace SnapTown.Models
     {
         public int UserID { get; set; }
         public string Name { get; set; }
+        public string FacebookId { get; set; }
         public string AuthToken { get; set; }
         public string GCMClientToken { get; set; }
     }

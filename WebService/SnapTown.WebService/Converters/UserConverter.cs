@@ -13,7 +13,7 @@ namespace SnapTown.WebService.Converters
         public static readonly Expression<Func<User, RegisterUserDto>> AsUserDto =
               x => new RegisterUserDto
               {
-                  UserID = x.UserID,
+                  FacebookId = x.FacebookId,
                   Name = x.Name,
                   AuthToken = x.AuthToken,
                   GCMClientToken = x.GCMClientToken
@@ -22,7 +22,7 @@ namespace SnapTown.WebService.Converters
         public static readonly Expression<Func<RegisterUserDto, User>> AsUser =
              x => new User()
              {
-                 UserID = x.UserID.Value,
+                 FacebookId = x.FacebookId,
                  Name = x.Name,
                  AuthToken = x.AuthToken,
                  GCMClientToken = x.GCMClientToken
