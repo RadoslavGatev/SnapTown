@@ -1,5 +1,7 @@
 package com.example.snaptown;
 
+import com.facebook.LoginActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run() {
 				Intent intent = new Intent(MainActivity.this,
-						 NewsFeedActivity.class);
+						 FacebookLoginActivity.class);
 				startActivity(intent);
 			}
 
