@@ -21,9 +21,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.snaptown.adapters.TownsAutoCompleteAdapter;
 import com.example.snaptown.apiclients.TownsClient;
-import com.example.snaptown.controls.DelayAutoCompleteTextView;
 import com.example.snaptown.models.Town;
 import com.facebook.Session;
 import com.example.snaptown.R;
@@ -154,7 +152,7 @@ public class TownsActivity extends Activity {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View rowView = inflater.inflate(
-					R.layout.simple_dropdown_item_2line, parent, false);
+					R.layout.town_dropdown_item_toggle, parent, false);
 			TextView textView = (TextView) rowView.findViewById(R.id.text1);
 
 			textView.setText(values.get(position).name);
