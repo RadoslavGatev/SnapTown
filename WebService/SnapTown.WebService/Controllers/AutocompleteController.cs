@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData;
 
 namespace SnapTown.WebService.Controllers
 {
@@ -22,6 +23,7 @@ namespace SnapTown.WebService.Controllers
 
         [Route("towns/{query}")]
         [HttpGet]
+        [EnableQuery]
         public IQueryable<TownDto> Autocomplete(string query)
         {
             return this.unitOfWork.Towns.Filter(t => t.Name.StartsWith(query),
