@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void run() {
 				Intent intent = new Intent(MainActivity.this,
-						FacebookLoginActivity.class);
+						 NewsFeedActivity.class);
 				startActivity(intent);
 			}
 

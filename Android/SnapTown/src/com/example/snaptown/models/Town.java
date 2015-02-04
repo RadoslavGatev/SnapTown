@@ -11,4 +11,12 @@ public class Town {
 		this.country = country;
 	}
 
+	public CharSequence getName() {
+		return name;
+	}
+
+	public CharSequence getCountry() {
+		return country;
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.example.snaptown.apiclients;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,10 +12,10 @@ import com.example.snaptown.models.Town;
 
 public class TownsClient {
 
-	public static final String Route = "autocomplete/towns/%s";
+	public static final String Route = "autocomplete/towns/%s?$top=%d";
 
-	public static Iterable<Town> getAutocomplete(String query) {
-		String routePath = String.format(Route, query);
+	public static List<Town> getAutocomplete(String query, int maxResults) {
+		String routePath = String.format(Route, query, maxResults);
 
 		String result = ApiHelper.get(routePath);
 
@@ -24,7 +25,7 @@ public class TownsClient {
 			jsonArray = new JSONArray(result);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject entry = (JSONObject) jsonArray.get(i);
-				
+
 				Town town = new Town(entry.getInt("TownId"),
 						entry.getString("Name"), entry.getString("Country"));
 				towns.add(town);

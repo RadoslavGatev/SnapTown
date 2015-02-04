@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -39,10 +42,11 @@ public class ApiHelper {
 		InputStream inputStream = null;
 		String result = "";
 		try {
+			request.setHeader("Accept", "application/json");
+			request.setHeader("Content-Type", "application/json");
 
 			// create HttpClient
 			HttpClient httpclient = new DefaultHttpClient();
-
 			// make GET request to the given URL
 			HttpResponse httpResponse = httpclient.execute(request);
 
