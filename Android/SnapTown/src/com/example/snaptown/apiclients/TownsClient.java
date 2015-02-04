@@ -26,7 +26,7 @@ public class TownsClient {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject entry = (JSONObject) jsonArray.get(i);
 
-				Town town = new Town(entry.getInt("TownId"),
+				Town town = new Town(entry.getInt("TownID"),
 						entry.getString("Name"), entry.getString("Country"));
 				towns.add(town);
 			}
