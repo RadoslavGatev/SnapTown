@@ -51,12 +51,15 @@ public class ApiHelper {
 			HttpResponse httpResponse = httpclient.execute(request);
 
 			// receive response as inputStream
-			inputStream = httpResponse.getEntity().getContent();
+			if (httpResponse.getEntity() != null) {
+				inputStream = httpResponse.getEntity().getContent();
+				
+				if (inputStream != null) {
+					result = convertInputStreamToString(inputStream);
+				}
+			}
 
 			// convert inputstream to string
-			if (inputStream != null) {
-				result = convertInputStreamToString(inputStream);
-			}
 
 		} catch (Exception e) {
 			Log.d("InputStream", e.getLocalizedMessage());

@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal" >
+    android:minHeight="?android:attr/listPreferredItemHeight" >
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/town_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="5dp"
-        android:layout_weight="10"
         android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
 
     <ToggleButton
-        android:id="@+id/togglebutton"
-        android:layout_width="wrap_content"
+        android:id="@+id/subscribe_togglebutton"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textOff="Unsubscribe"
-        android:textOn="Subscribe" />
+        android:layout_alignParentRight="true"
+        android:textOff="Subscribe"
+        android:textOn="Unsubscribe" />
 
-</LinearLayout>
+</RelativeLayout>
