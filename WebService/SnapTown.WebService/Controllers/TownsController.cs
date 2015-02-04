@@ -28,7 +28,7 @@ namespace SnapTown.WebService.Controllers
             var user = unitOfWork.Users.Get(u => u.AuthToken == authToken);
 
             return this.unitOfWork.Subscriptions.Filter(s => s.UserID == user.UserID, new string[] { "Town" })
-                .Select(x => x.Town).Select(TownConverter.AsTownDto);
+                .Select(x => x.Town).Select(TownConverter.AsSubscribedTownDto);
         }
 
         [Route("{townId:int}")]

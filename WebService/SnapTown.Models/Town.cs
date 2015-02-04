@@ -17,5 +17,6 @@ namespace SnapTown.Models
         public int CountryID { get; set; }
 
         public virtual Country Country { get; set; }
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
     }
 }

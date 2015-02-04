@@ -17,5 +17,14 @@ namespace SnapTown.WebService.Converters
                   Name = x.Name,
                   Country = x.Country.CountryCode
               };
+
+        public static readonly Expression<Func<Town, TownDto>> AsSubscribedTownDto =
+             x => new TownDto
+             {
+                 TownID = x.TownID,
+                 Name = x.Name,
+                 Country = x.Country.CountryCode,
+                 IsSubscribed = true
+             };
     }
 }
