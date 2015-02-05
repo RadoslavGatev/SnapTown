@@ -27,7 +27,7 @@ namespace SnapTown.Models
 
         public DateTime UploadedOn { get; set; }
 
-        public int OwnerID { get; set; }
+        public int UserID { get; set; }
         public virtual User Owner { get; set; }
         public int TownID { get; set; }
         public virtual Town Town { get; set; }

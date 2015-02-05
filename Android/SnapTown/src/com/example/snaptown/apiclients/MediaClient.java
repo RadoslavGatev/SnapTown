@@ -8,13 +8,26 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.snaptown.helpers.ApiHelper;
+import com.example.snaptown.models.Media;
+import com.example.snaptown.models.Town;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 public class MediaClient {
@@ -25,6 +38,7 @@ public class MediaClient {
 
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
 			+ "/Media?authToken=%s&townId=%d";
+	private static final String MediaByTownRoute = "media/%d?authToken=%s";
 
 	private static String lineEnd = "\r\n";
 	private static String twoHyphens = "--";
@@ -56,7 +70,8 @@ public class MediaClient {
 
 						dos = new DataOutputStream(conn.getOutputStream());
 
-						writeToStream(type, sourceFile.getName(), dos, fileInputStream);
+						writeToStream(type, sourceFile.getName(), dos,
+								fileInputStream);
 
 						// Responses from the server (code and message)
 						serverResponseCode = conn.getResponseCode();
@@ -94,11 +109,11 @@ public class MediaClient {
 		conn.setDoOutput(true); // Allow Outputs
 		conn.setUseCaches(false); // Don't use a Cached Copy
 		conn.setRequestMethod("POST");
-//		conn.setRequestProperty("Connection", "Keep-Alive");
-//		conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-		conn.setRequestProperty("Content-Type", "multipart/form-data; boundary="
-				+ boundary);
-//		conn.setRequestProperty("uploaded_file", fileName);
+		// conn.setRequestProperty("Connection", "Keep-Alive");
+		// conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+		conn.setRequestProperty("Content-Type",
+				"multipart/form-data; boundary=" + boundary);
+		// conn.setRequestProperty("uploaded_file", fileName);
 		return conn;
 	}
 
@@ -171,5 +186,43 @@ public class MediaClient {
 				cursor.close();
 			}
 		}
+	}
+
+	public static List<Media> getMediaForTown(int townId, String authToken) {
+		String routePath = String.format(MediaByTownRoute, townId, authToken);
+
+		String result = ApiHelper.get(routePath);
+		return parseMedia(result);
+	}
+
+	private static List<Media> parseMedia(String json) {
+		ArrayList<Media> towns = new ArrayList<Media>();
+		try {
+			JSONArray jsonArray = new JSONArray(json);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject entry = (JSONObject) jsonArray.get(i);
+
+				String stringDate = entry.getString("UploadedOn");
+				SimpleDateFormat format = new SimpleDateFormat(
+						"MM/dd/yyyy HH:mm:ss");
+				Date date = null;
+				try {
+					date = format.parse(stringDate);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				Media media = new Media(entry.getInt("MediaId"),
+						entry.getString("Description"), date,
+						entry.getString("UploadedBy"));
+				towns.add(media);
+			}
+		} catch (JSONException e) {
+
+			e.printStackTrace();
+		}
+
+		return towns;
 	}
 }

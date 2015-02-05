@@ -199,15 +199,32 @@ public class TownsActivity extends Activity {
 								public void run() {
 									if (isChecked) {
 										TownsClient.subscribeForTown(
-												currentTown.townId, UserClient.currentUser.getAuthToken());
+												currentTown.townId,
+												UserClient.currentUser
+														.getAuthToken());
 									} else {
 										TownsClient.unsubscribeForTown(
-												currentTown.townId, UserClient.currentUser.getAuthToken());
+												currentTown.townId,
+												UserClient.currentUser
+														.getAuthToken());
 									}
 								}
 							}).start();
 						}
 					});
+
+			rowView.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View v) {
+					Intent startViewTownActivity = new Intent(
+							TownsActivity.this, ViewTownActivity.class);
+					startViewTownActivity
+							.putExtra("townId", currentTown.townId);
+					startViewTownActivity
+							.putExtra("townName", currentTown.name);
+
+					startActivity(startViewTownActivity);
+				}
+			});
 
 			textView.setText(currentTown.name);
 

@@ -12,5 +12,6 @@
     <string name="login_message">In order to use the app you need to login with your Facebook account</string>
     <string name="title_facebook_login">Facebook Login</string>
     <string name="action_logout">Logout</string>
+    <string name="title_activity_view_town">ViewTownActivity</string>
 
 </resources>

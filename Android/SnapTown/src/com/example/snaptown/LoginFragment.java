@@ -76,24 +76,27 @@ public class LoginFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	private void onSessionStateChange(final Session session, SessionState state,
-			Exception exception) {
+	private void onSessionStateChange(final Session session,
+			SessionState state, Exception exception) {
 		if (state.isOpened()) {
 			// Logged in
 			Request.newMeRequest(session, new GraphUserCallback() {
-				
+
 				@Override
 				public void onCompleted(GraphUser user, Response response) {
-					String name = user.getName();
-					String facebookId = user.getId();
-					// TODO get GCMToken
-					String gcmToken = null;
-					String authToken = session.getAccessToken();
-					UserModel userModel = new UserModel(name, facebookId, gcmToken, authToken);
-					UserClient.postUserInfo(userModel);
+					if (user != null) {
+						String name = user.getName();
+						String facebookId = user.getId();
+						// TODO get GCMToken
+						String gcmToken = null;
+						String authToken = session.getAccessToken();
+						UserModel userModel = new UserModel(name, facebookId,
+								gcmToken, authToken);
+						UserClient.postUserInfo(userModel);
+					}
 				}
 			}).executeAsync();
-			
+
 			Intent intent = new Intent(getActivity(), NewsFeedActivity.class);
 			startActivity(intent);
 		} else if (state.isClosed()) {

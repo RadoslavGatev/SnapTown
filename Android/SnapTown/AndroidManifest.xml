@@ -63,6 +63,10 @@
             android:name="com.facebook.LoginActivity"
             android:label="@string/title_facebook_login" >
         </activity>
+        <activity
+            android:name=".ViewTownActivity"
+            android:label="@string/title_activity_view_town" >
+        </activity>
     </application>
 
 </manifest>

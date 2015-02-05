@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 			}
 
 		};
-		handler.postDelayed(runnable, 5000);
+		handler.postDelayed(runnable, 2000);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ namespace SnapTown.WebService.Controllers
         [Route("{townId:int}")]
         public IQueryable<MediaDto> GetAllByTown(int townId, string authToken)
         {
-            return unitOfWork.Media.Filter(m => m.TownID == townId)
+            return unitOfWork.Media.Filter(m => m.TownID == townId, new string[] { "Owner" })
                 .Select(MediaConverter.AsMediaDto);
         }
 
@@ -62,7 +62,7 @@ namespace SnapTown.WebService.Controllers
 
                         var media = new Media(mimeType)
                         {
-                            OwnerID = user.UserID,
+                            UserID = user.UserID,
                             TownID = town.TownID,
                             UploadedOn = DateTime.Now
                         };
