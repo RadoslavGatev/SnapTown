@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.snaptown.apiclients.TownsClient;
+import com.example.snaptown.apiclients.UserClient;
 import com.example.snaptown.models.Town;
 import com.facebook.Session;
 import com.example.snaptown.R;
@@ -160,9 +161,8 @@ public class TownsActivity extends Activity {
 
 		@Override
 		protected List<Town> doInBackground(String... params) {
-			// TODO authToken
 			List<Town> foundTowns = TownsClient.getAutocomplete(params[0], 10,
-					"123");
+					UserClient.currentUser.getAuthToken());
 			return foundTowns;
 		}
 	}
@@ -197,13 +197,12 @@ public class TownsActivity extends Activity {
 
 							new Thread(new Runnable() {
 								public void run() {
-									// TODO authToken
 									if (isChecked) {
 										TownsClient.subscribeForTown(
-												currentTown.townId, "123");
+												currentTown.townId, UserClient.currentUser.getAuthToken());
 									} else {
 										TownsClient.unsubscribeForTown(
-												currentTown.townId, "123");
+												currentTown.townId, UserClient.currentUser.getAuthToken());
 									}
 								}
 							}).start();

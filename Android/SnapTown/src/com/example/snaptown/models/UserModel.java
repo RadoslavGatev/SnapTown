@@ -15,6 +15,10 @@ public class UserModel {
 		this.authToken = authToken;
 	}
 
+	public String getAuthToken(){
+		return this.authToken;
+	}
+	
 	@Override
 	public String toString() {
 		String template = "{ \"Name\": %s, \"FacebookId\": %s, \"GCMClientToken\": %s, \"AuthToken\": %s }";
