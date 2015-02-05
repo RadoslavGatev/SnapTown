@@ -7,9 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.snaptown.apiclients.UserClient;
+import com.example.snaptown.models.UserModel;
+import com.facebook.Request;
+import com.facebook.Request.GraphUserCallback;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
 public class LoginFragment extends Fragment {
@@ -70,12 +76,28 @@ public class LoginFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	private void onSessionStateChange(Session session, SessionState state,
+	private void onSessionStateChange(final Session session, SessionState state,
 			Exception exception) {
 		if (state.isOpened()) {
+			// Logged in
+			Request.newMeRequest(session, new GraphUserCallback() {
+				
+				@Override
+				public void onCompleted(GraphUser user, Response response) {
+					String name = user.getName();
+					String facebookId = user.getId();
+					// TODO get GCMToken
+					String gcmToken = null;
+					String authToken = session.getAccessToken();
+					UserModel userModel = new UserModel(name, facebookId, gcmToken, authToken);
+					UserClient.postUserInfo(userModel);
+				}
+			}).executeAsync();
+			
 			Intent intent = new Intent(getActivity(), NewsFeedActivity.class);
 			startActivity(intent);
 		} else if (state.isClosed()) {
+			// Logged out
 		}
 	}
 
