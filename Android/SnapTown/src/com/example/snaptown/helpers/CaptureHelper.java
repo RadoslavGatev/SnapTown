@@ -28,6 +28,9 @@ public class CaptureHelper {
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	public static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
+	private static String currentImageFilePath = null;
+	private static String currentVideoFilePath = null;
+
 	public static OnClickListener getImageOnClickListener(
 			final Activity activity) {
 		OnClickListener listener = new OnClickListener() {
@@ -36,18 +39,19 @@ public class CaptureHelper {
 			public void onClick(View v) {
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				if (intent.resolveActivity(activity.getPackageManager()) != null) {
-					// File photoFile = null;
-					// try {
-					// photoFile = createImageFile(activity);
-					// } catch (IOException ex) {
-					// // Error occurred while creating the File
-					// }
-					// if (photoFile != null) {
-					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
-					// Uri.fromFile(photoFile));
-					activity.startActivityForResult(intent,
-							CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-					// }
+					File photoFile = null;
+					currentImageFilePath = null;
+					try {
+						photoFile = createImageFile(activity);
+					} catch (IOException ex) {
+						// Error occurred while creating the File
+					}
+					if (photoFile != null) {
+						intent.putExtra(MediaStore.EXTRA_OUTPUT,
+								Uri.fromFile(photoFile));
+						activity.startActivityForResult(intent,
+								CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+					}
 				}
 			}
 		};
@@ -63,18 +67,19 @@ public class CaptureHelper {
 			public void onClick(View v) {
 				Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 				if (intent.resolveActivity(activity.getPackageManager()) != null) {
-					// File videoFile = null;
-					// try {
-					// videoFile = createVideoFile(activity);
-					// } catch (Exception e) {
-					// // TODO: handle exception
-					// }
-					// if (videoFile != null) {
-					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
-					// Uri.fromFile(videoFile));
-					activity.startActivityForResult(intent,
-							CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-					// }
+					File videoFile = null;
+					currentVideoFilePath = null;
+					try {
+						videoFile = createVideoFile(activity);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					if (videoFile != null) {
+						intent.putExtra(MediaStore.EXTRA_OUTPUT,
+								Uri.fromFile(videoFile));
+						activity.startActivityForResult(intent,
+								CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+					}
 				}
 			}
 		};
@@ -85,44 +90,38 @@ public class CaptureHelper {
 	public static void handleImageCaptured(Context context, int resultCode,
 			Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
-			Bundle extras = data.getExtras();
-			Bitmap imageBitmap = (Bitmap) extras.get("data");
 			Intent intent = new Intent(context, PreviewActivity.class);
-			intent.putExtra(PreviewActivity.EXTRA_CAPTURED_DATA, imageBitmap);
 			intent.putExtra(PreviewActivity.EXTRA_IS_IMAGE, true);
+			intent.putExtra(PreviewActivity.EXTRA_FILE_PATH,
+					currentImageFilePath);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			context.startActivity(intent);
-			// Toast.makeText(context, "Image saved to:\n" + data.getData(),
-			// Toast.LENGTH_LONG).show();
 		} else if (resultCode == Activity.RESULT_CANCELED) {
 			// User cancelled
 		} else {
 			// Image capture failed
-			 Toast.makeText(context, "Image capture failed.",
-						 Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Image capture failed.", Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 
 	public static void handleVideoCaptured(Context context, int resultCode,
 			Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
-			Uri videoUri = data.getData();
 			Intent intent = new Intent(context, PreviewActivity.class);
-			intent.putExtra(PreviewActivity.EXTRA_CAPTURED_DATA, videoUri);
 			intent.putExtra(PreviewActivity.EXTRA_IS_IMAGE, false);
+			intent.putExtra(PreviewActivity.EXTRA_FILE_PATH,
+					currentVideoFilePath);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			context.startActivity(intent);
-			// Video captured and saved to fileUri specified in the Intent
-			// Toast.makeText(context, "Video saved to:\n" + data.getData(),
-			// Toast.LENGTH_LONG).show();
 		} else if (resultCode == Activity.RESULT_CANCELED) {
 			// User cancelled
 		} else {
 			// Video capture failed
-			Toast.makeText(context, "Video capture failed.",
-					 Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Video capture failed.", Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 
@@ -131,15 +130,11 @@ public class CaptureHelper {
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
 				.format(new Date());
 		String imageFileName = "JPEG_" + timeStamp;
-		File storageDir = context
-				.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-		File image = File.createTempFile(imageFileName, /* prefix */
-				".jpg", /* suffix */
-				storageDir /* directory */
-		);
+		File storageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-		// Save a file: path for use with ACTION_VIEW intents
-		// mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+		currentImageFilePath = image.getAbsolutePath();
 		return image;
 	}
 
@@ -147,9 +142,11 @@ public class CaptureHelper {
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
 				.format(new Date());
 		String videoFileName = "MP4_" + timeStamp;
-		File storageDir = context
-				.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+		File storageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
 		File video = File.createTempFile(videoFileName, ".mp4", storageDir);
+
+		currentVideoFilePath = video.getAbsolutePath();
 		return video;
 	}
 }

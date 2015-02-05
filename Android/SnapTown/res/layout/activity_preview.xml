@@ -18,8 +18,9 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        
-        <VideoView android:id="@+id/captured_video_view"
+
+        <VideoView
+            android:id="@+id/captured_video_view"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -52,6 +53,15 @@
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
+
+            <Button
+                android:id="@+id/preview_post_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="Post" />
         </LinearLayout>
     </LinearLayout>
 
