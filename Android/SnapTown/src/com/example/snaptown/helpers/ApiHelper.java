@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class ApiHelper {
-	public static final String ApiUrl = "http://10.15.20.60/snaptown/api";
+	public static final String ApiUrl = "http://192.168.1.104/snaptown/api";
 
 	public static String get(String url) {
 		return callService(new HttpGet(ApiUrl + "/" + url));
@@ -76,7 +76,8 @@ public class ApiHelper {
 			if (httpResponse.getEntity() != null) {
 				inputStream = httpResponse.getEntity().getContent();
 
-				if (inputStream != null) {
+				if (inputStream != null
+						&& httpResponse.getStatusLine().getStatusCode() == 200) {
 					result = convertInputStreamToString(inputStream);
 				}
 			}
