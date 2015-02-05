@@ -26,6 +26,10 @@ namespace SnapTown.WebService.Controllers
         public IQueryable<TownDto> Get(string authToken)
         {
             var user = unitOfWork.Users.Get(u => u.AuthToken == authToken);
+            if (user == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
 
             return this.unitOfWork.Subscriptions.Filter(s => s.UserID == user.UserID, new string[] { "Town" })
                 .Select(x => x.Town).Select(TownConverter.AsSubscribedTownDto);
