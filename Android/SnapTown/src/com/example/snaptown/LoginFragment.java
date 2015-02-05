@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.snaptown.apiclients.UserClient;
+import com.example.snaptown.helpers.GcmHelper;
 import com.example.snaptown.models.UserModel;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
@@ -87,8 +88,7 @@ public class LoginFragment extends Fragment {
 					if (user != null) {
 						String name = user.getName();
 						String facebookId = user.getId();
-						// TODO get GCMToken
-						String gcmToken = null;
+						String gcmToken = GcmHelper.GcmRegistrationId;
 						String authToken = session.getAccessToken();
 						UserModel userModel = new UserModel(name, facebookId,
 								gcmToken, authToken);
