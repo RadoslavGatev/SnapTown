@@ -34,7 +34,7 @@ namespace SnapTown.WebService.Controllers
                 .Select(MediaConverter.AsMediaDto);
         }
 
-        public HttpResponseMessage Post(string authToken, int townId)
+        public HttpResponseMessage Post(string authToken, int townId, string description)
         {
 
             var result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -64,7 +64,8 @@ namespace SnapTown.WebService.Controllers
                         {
                             UserID = user.UserID,
                             TownID = town.TownID,
-                            UploadedOn = DateTime.Now
+                            UploadedOn = DateTime.Now,
+                            Description = description
                         };
                         this.unitOfWork.Media.Create(media);
                         this.unitOfWork.SaveChanges();

@@ -1,0 +1,34 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.snaptown.ViewTownActivity" >
+
+    <com.example.snaptown.controls.MainControlsView
+        xmlns:custom="http://schemas.android.com/apk/res/com.example.snaptown"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        custom:selectedButton="towns" >
+    </com.example.snaptown.controls.MainControlsView>
+
+    <TextView
+        android:id="@+id/town_name_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <ProgressBar
+        android:id="@+id/load_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <ListView
+        android:id="@+id/townFeed_listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+</LinearLayout>

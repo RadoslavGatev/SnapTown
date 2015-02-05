@@ -38,7 +38,7 @@ public class MediaClient {
 
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
 			+ "/Media?authToken=%s&townId=%d";
-	private static final String MediaByTownRoute = "media/%d?authToken=%s";
+	private static final String MediaByTownRoute = "media/%d?authToken=%s&description=%s";
 
 	private static String lineEnd = "\r\n";
 	private static String twoHyphens = "--";
