@@ -45,12 +45,12 @@ namespace SnapTown.WebService.Controllers
 
 
                 Request.Content.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(
-                    new MultipartMemoryStreamProvider()).ContinueWith(async (task) =>
+                    new MultipartMemoryStreamProvider()).ContinueWith((task) =>
                 {
                     MultipartMemoryStreamProvider provider = task.Result;
                     foreach (HttpContent content in provider.Contents)
                     {
-                        Stream stream = await content.ReadAsStreamAsync();
+                        Stream stream = content.ReadAsStreamAsync().Result;
                         Image image = Image.FromStream(stream);
                         var mimeType = content.Headers.ContentType.MediaType;
 
