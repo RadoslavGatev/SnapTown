@@ -37,8 +37,8 @@ public class MediaClient {
 	}
 
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
-			+ "/Media?authToken=%s&townId=%d";
-	private static final String MediaByTownRoute = "media/%d?authToken=%s&description=%s";
+			+ "/Media?authToken=%s&townId=%d&description=%s";
+	private static final String MediaByTownRoute = "media/%d?authToken=%s";
 
 	private static String lineEnd = "\r\n";
 	private static String twoHyphens = "--";
@@ -64,7 +64,8 @@ public class MediaClient {
 						FileInputStream fileInputStream = new FileInputStream(
 								sourceFile);
 						URL url = new URL(String.format(UPLOAD_SERVER_URI,
-								UserClient.currentUser.getAuthToken(), 3));
+								UserClient.currentUser.getAuthToken(), 3,
+								"uploaded:)"));
 						// Open a HTTP connection to the URL
 						conn = initConnection(fileName, boundary, url);
 
