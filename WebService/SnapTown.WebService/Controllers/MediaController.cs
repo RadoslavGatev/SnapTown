@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace SnapTown.WebService.Controllers
 {
@@ -135,23 +136,42 @@ namespace SnapTown.WebService.Controllers
             return result;
         }
 
+        [Route("notify/{townId:int}")]
+        public void MakeNotification(int townId)
+        {
+            // Created for test purposes
+            var town = this.unitOfWork.Towns.Get(x => x.TownID == townId);
+            if (town != null)
+            {
+                notifyAllSubscribers(town);
+            }
+        }
+
         private void notifyAllSubscribers(Town town)
         {
-
             //TODO remove the current user
             var registrationIds = this.unitOfWork.Subscriptions
                 .Filter(s => s.TownID == town.TownID, new string[] { "User" })
                 .Select(s => s.User.GCMClientToken);
-            //Create our push services broker
-            var push = new PushBroker();
 
-            push.RegisterGcmService(new GcmPushChannelSettings("AIzaSyDZwSkJL1KowOSLWD9dgbJaY1qsqMTLsc8"));
+            if (registrationIds.Count() > 0)
+            {
+                //Create our push services broker
+                var push = new PushBroker();
 
-            push.QueueNotification(new GcmNotification().ForDeviceRegistrationId(registrationIds)
-                                  .WithJson(@"{""alert"":""Hello World!"",""badge"":7,""sound"":""sound.caf""}"));
+                push.RegisterGcmService(new GcmPushChannelSettings("AIzaSyDZwSkJL1KowOSLWD9dgbJaY1qsqMTLsc8"));
 
-            //Stop and wait for the queues to drains
-            push.StopAllServices();
+                var obj = new { msg = "Hello World" };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(obj);
+
+                push.QueueNotification(new GcmNotification().ForDeviceRegistrationId(registrationIds)
+                                      .WithJson(json));
+
+                //Stop and wait for the queues to drains
+                push.StopAllServices();
+            }
+
         }
     }
 }

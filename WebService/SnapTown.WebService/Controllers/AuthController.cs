@@ -27,6 +27,7 @@ namespace SnapTown.WebService.Controllers
             {
                 //update
                 user.AuthToken = registerUser.AuthToken;
+                user.GCMClientToken = registerUser.GCMClientToken;
                 this.unitOfWork.Users.Update(user);
             }
             else
