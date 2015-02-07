@@ -82,7 +82,7 @@ namespace SnapTown.WebService.Controllers
         {
             var user = this.unitOfWork.Users.Get(u => u.AuthToken == authToken);
             var doesSubscriptionExist = this.unitOfWork.Subscriptions.Contains(s => s.TownID == townId &&
-            s.User.UserID == user.UserID);
+            s.UserID == user.UserID);
 
             if (!doesSubscriptionExist)
             {
