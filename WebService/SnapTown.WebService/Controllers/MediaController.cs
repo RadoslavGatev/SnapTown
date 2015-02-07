@@ -29,10 +29,29 @@ namespace SnapTown.WebService.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        public IQueryable<MediaDto> Get(string authToken)
+        {
+            var user = unitOfWork.Users.Get(u => u.AuthToken == authToken);
+            if (user == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var subscribedTownId = unitOfWork.Subscriptions
+                .Filter(s => s.UserID == user.UserID)
+                .Select(s => s.TownID);
+
+            var result = unitOfWork.Media.Filter(m => subscribedTownId.Contains(m.TownID))
+                .OrderByDescending(m => m.UploadedOn)
+                .Select(MediaConverter.AsMediaDto);
+            return result;
+        }
+
         [Route("{townId:int}")]
         public IQueryable<MediaDto> GetAllByTown(int townId, string authToken)
         {
             return unitOfWork.Media.Filter(m => m.TownID == townId, new string[] { "Owner" })
+                 .OrderByDescending(m => m.UploadedOn)
                 .Select(MediaConverter.AsMediaDto);
         }
 

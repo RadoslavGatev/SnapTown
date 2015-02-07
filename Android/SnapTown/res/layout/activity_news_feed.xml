@@ -5,19 +5,27 @@
     tools:context="com.example.snaptown.NewsFeedActivity" >
 
     <LinearLayout
-        xmlns:custom="http://schemas.android.com/apk/res/com.example.snaptown"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/capture_controls"
         android:orientation="vertical" >
 
         <com.example.snaptown.controls.MainControlsView
+            xmlns:custom="http://schemas.android.com/apk/res/com.example.snaptown"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             custom:selectedButton="newsFeed" >
         </com.example.snaptown.controls.MainControlsView>
 
+        <ProgressBar
+            android:id="@+id/news_feed_progressbar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
         <ListView
+            android:id="@+id/news_feed_listview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
         </ListView>

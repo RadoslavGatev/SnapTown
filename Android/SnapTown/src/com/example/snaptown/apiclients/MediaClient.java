@@ -47,6 +47,7 @@ public class MediaClient {
 
 	private static final String GetMediaRoute = ApiHelper.ApiUrl + "/Media/%d";
 	private static final String MediaByTownRoute = "media/%d?authToken=%s";
+	private static final String NewsFeedRoute = "media/?authToken=%s";
 
 	private static String lineEnd = "\r\n";
 	private static String twoHyphens = "--";
@@ -199,6 +200,13 @@ public class MediaClient {
 
 	public static List<Media> getMediaForTown(int townId, String authToken) {
 		String routePath = String.format(MediaByTownRoute, townId, authToken);
+
+		String result = ApiHelper.get(routePath);
+		return parseMedia(result);
+	}
+
+	public static List<Media> getNewsFeed(String authToken) {
+		String routePath = String.format(NewsFeedRoute, authToken);
 
 		String result = ApiHelper.get(routePath);
 		return parseMedia(result);

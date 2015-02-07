@@ -93,12 +93,14 @@ public class LoginFragment extends Fragment {
 						UserModel userModel = new UserModel(name, facebookId,
 								gcmToken, authToken);
 						UserClient.postUserInfo(userModel);
+						
+						Intent intent = new Intent(getActivity(),
+								NewsFeedActivity.class);
+						startActivity(intent);
 					}
 				}
 			}).executeAsync();
 
-			Intent intent = new Intent(getActivity(), NewsFeedActivity.class);
-			startActivity(intent);
 		} else if (state.isClosed()) {
 			// Logged out
 		}

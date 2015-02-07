@@ -1,10 +1,12 @@
 package com.example.snaptown.adapters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 	private ArrayList<Media> values;
 	private final Context context;
 	private final Hashtable<Integer, Bitmap> images;
+	private boolean newsFeed;
 
 	public MediaArrayAdapter(Context context, ArrayList<Media> values) {
 		super(context, 0, values);
@@ -53,17 +56,19 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 			// just use the viewHolder
 			viewHolder = (DisplayMediaViewHolder) convertView.getTag();
 		}
-		
+
 		viewHolder.mediaImage.setImageResource(R.drawable.blank);
 
 		// object item based on the position
 		Media currentTown = values.get(position);
 		viewHolder.userTextView.setText(currentTown.uploadedBy);
+		viewHolder.datePostedTextView.setText(DateFormat.format(
+				"dd MMM yyyy hh:mm", currentTown.uploadedOn));
 		viewHolder.descriptionTextView.setText(currentTown.description);
 		Bitmap bitmap = images.get(currentTown.mediaId);
 
 		if (bitmap == null) {
-			//viewHolder.mediaImage.setImageResource(R.drawable.blank);
+			// viewHolder.mediaImage.setImageResource(R.drawable.blank);
 			new LoadPhotoTask(images, currentTown.mediaId, viewHolder)
 					.execute(currentTown.mediaId);
 		} else {
@@ -71,5 +76,9 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 		}
 
 		return convertView;
+	}
+
+	public void isNewsFeed(boolean isNewsFeed) {
+		newsFeed = isNewsFeed;
 	}
 }

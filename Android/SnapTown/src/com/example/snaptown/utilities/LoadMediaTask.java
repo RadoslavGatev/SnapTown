@@ -45,7 +45,6 @@ public class LoadMediaTask extends AsyncTask<Integer, Void, List<Media>> {
 
 	@Override
 	protected List<Media> doInBackground(Integer... params) {
-		Log.d("CurrentUser-LoadMedia", UserClient.currentUser.toString());
 		List<Media> media = MediaClient.getMediaForTown(params[0],
 				UserClient.currentUser.getAuthToken());
 		return media;

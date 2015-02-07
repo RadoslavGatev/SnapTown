@@ -14,9 +14,12 @@ public class DisplayMediaViewHolder {
 				.findViewById(R.id.media_imageview);
 		this.descriptionTextView = (TextView) convertView
 				.findViewById(R.id.description_textview);
+		this.datePostedTextView = (TextView) convertView
+				.findViewById(R.id.date_posted_textview);
 	}
 
 	public TextView userTextView;
 	public ImageView mediaImage;
 	public TextView descriptionTextView;
+	public TextView datePostedTextView;
 }
