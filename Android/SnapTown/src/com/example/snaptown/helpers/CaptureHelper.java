@@ -1,6 +1,7 @@
 package com.example.snaptown.helpers;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +13,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,7 +51,8 @@ public class CaptureHelper {
 						// Error occurred while creating the File
 					}
 					if (photoFile != null) {
-						LocationHelper.initLocationHelper(activity.getApplicationContext());
+						LocationHelper.initLocationHelper(activity
+								.getApplicationContext());
 						LocationHelper.startListening();
 						intent.putExtra(MediaStore.EXTRA_OUTPUT,
 								Uri.fromFile(photoFile));
@@ -77,7 +82,8 @@ public class CaptureHelper {
 						// TODO: handle exception
 					}
 					if (videoFile != null) {
-						LocationHelper.initLocationHelper(activity.getApplicationContext());
+						LocationHelper.initLocationHelper(activity
+								.getApplicationContext());
 						LocationHelper.startListening();
 						intent.putExtra(MediaStore.EXTRA_OUTPUT,
 								Uri.fromFile(videoFile));
@@ -129,6 +135,62 @@ public class CaptureHelper {
 		}
 	}
 
+	public static String saveBitmapToFile(Bitmap bmp, Context context) {
+		FileOutputStream out = null;
+		try {
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+					Locale.US).format(new Date());
+			String imageFileName = "JPEG_" + timeStamp;
+			File outputDir = context.getCacheDir(); // context being the
+													// Activity pointer
+			File outputFile = File.createTempFile(imageFileName, ".jpg",
+					outputDir);
+			out = new FileOutputStream(outputFile);
+			bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			return outputFile.getAbsolutePath();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public static Bitmap rotateFile(String filepath){
+		Bitmap imageBitmap = BitmapFactory.decodeFile(filepath);
+		try {
+			ExifInterface ei = new ExifInterface(filepath);
+			int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+			switch(orientation) {
+			    case ExifInterface.ORIENTATION_ROTATE_90:
+			    	imageBitmap = rotateBitmap(imageBitmap, 90);
+			        break;
+			    case ExifInterface.ORIENTATION_ROTATE_180:
+			    	imageBitmap = rotateBitmap(imageBitmap, 180);
+			        break;
+			    case ExifInterface.ORIENTATION_ROTATE_270:
+			    	imageBitmap = rotateBitmap(imageBitmap, 270);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return imageBitmap;
+	}
+
+	public static Bitmap rotateBitmap(Bitmap source, float angle)
+	{
+	      Matrix matrix = new Matrix();
+	      matrix.postRotate(angle);
+	      return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+	}
+	
 	private static File createImageFile(Context context) throws IOException {
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)

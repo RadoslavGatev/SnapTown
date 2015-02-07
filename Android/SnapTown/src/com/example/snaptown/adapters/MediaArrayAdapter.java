@@ -85,13 +85,14 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 			viewHolder.datePostedTextView.setText(DateFormat.format(
 					"dd MMM yyyy HH:mm", currentTown.uploadedOn));
 		}
-		
+
 		viewHolder.descriptionTextView.setText(currentTown.description);
 		Bitmap bitmap = images.get(currentTown.mediaId);
 
 		if (bitmap == null) {
 			// viewHolder.mediaImage.setImageResource(R.drawable.blank);
-			new LoadPhotoTask(images, currentTown.mediaId, viewHolder)
+			new LoadPhotoTask(images, currentTown.mediaId, viewHolder,
+					getContext().getApplicationContext())
 					.execute(currentTown.mediaId);
 		} else {
 			viewHolder.mediaImage.setImageBitmap(bitmap);

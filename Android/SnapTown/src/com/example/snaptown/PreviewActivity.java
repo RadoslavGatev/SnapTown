@@ -5,6 +5,7 @@ import java.io.File;
 import com.example.snaptown.apiclients.MediaClient;
 import com.example.snaptown.apiclients.MediaClient.ContentType;
 import com.example.snaptown.apiclients.TownsClient;
+import com.example.snaptown.helpers.CaptureHelper;
 import com.example.snaptown.helpers.LocationHelper;
 import com.example.snaptown.models.Town;
 
@@ -69,22 +70,8 @@ public class PreviewActivity extends Activity implements
 		if (file.exists()) {
 			if (isImage) {
 				try {
-					Bitmap imageBitmap = BitmapFactory.decodeFile(file
+					Bitmap imageBitmap = CaptureHelper.rotateFile(file
 							.getAbsolutePath());
-					ExifInterface ei = new ExifInterface(file
-							.getAbsolutePath());
-					int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-					switch(orientation) {
-					    case ExifInterface.ORIENTATION_ROTATE_90:
-					    	imageBitmap = rotateBitmap(imageBitmap, 90);
-					        break;
-					    case ExifInterface.ORIENTATION_ROTATE_180:
-					    	imageBitmap = rotateBitmap(imageBitmap, 180);
-					        break;
-					    case ExifInterface.ORIENTATION_ROTATE_270:
-					    	imageBitmap = rotateBitmap(imageBitmap, 270);
-					}
 					capturedImageView.setImageBitmap(imageBitmap);
 					capturedImageView.setVisibility(View.VISIBLE);
 					capturedVideoView.setVisibility(View.GONE);
@@ -111,7 +98,6 @@ public class PreviewActivity extends Activity implements
 					ContentType type = (isImage ? ContentType.JPEG
 							: ContentType.MP4);
 					MediaClient.uploadFile(filePath, type);
-					LocationHelper.stopListening();
 					Toast.makeText(
 							PreviewActivity.this.getApplicationContext(),
 							"Your post was successful", Toast.LENGTH_SHORT)
@@ -153,6 +139,7 @@ public class PreviewActivity extends Activity implements
 
 	@Override
 	public void onBackPressed() {
+		LocationHelper.stopListening();
 		Intent intent = new Intent(this, NewsFeedActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);
@@ -173,13 +160,6 @@ public class PreviewActivity extends Activity implements
 		setLocationText(loc);
 	}
 
-	public static Bitmap rotateBitmap(Bitmap source, float angle)
-	{
-	      Matrix matrix = new Matrix();
-	      matrix.postRotate(angle);
-	      return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-	}
-	
 	private class GetTownTask extends AsyncTask<Double, Void, Town> {
 		@Override
 		protected Town doInBackground(Double... params) {
