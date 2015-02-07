@@ -69,7 +69,7 @@ public class GcmIntentService extends IntentService {
 			intent = new Intent(this, MainActivity.class);
 		}
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				intent, 0);
+				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		Uri alarmSound = RingtoneManager
 				.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
