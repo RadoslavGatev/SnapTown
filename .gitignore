@@ -7,6 +7,9 @@
 *.sln.docstates
 bin/
 gen/
+packages/
+.nuget/
+Media/
 
 # Build results
 [Dd]ebug/
@@ -190,3 +193,4 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+WebService/.nuget/NuGet.targets

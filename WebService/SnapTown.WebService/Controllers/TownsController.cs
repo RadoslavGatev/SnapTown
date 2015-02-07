@@ -53,7 +53,7 @@ namespace SnapTown.WebService.Controllers
         }
 
         [Route("location/{latitude:double};{longitude:double}")]
-        public object GetIdByCoordinates(double latitude, double longitude)
+        public Town GetIdByCoordinates(double latitude, double longitude)
         {
             var text = string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", longitude, latitude);
             var currentPoint = DbGeography.PointFromText(text, DbGeography.DefaultCoordinateSystemId);
@@ -69,7 +69,7 @@ namespace SnapTown.WebService.Controllers
                 .FirstOrDefault();
             if (town != null)
             {
-                return new { townId = town.TownId };
+                return this.unitOfWork.Towns.Get(t => t.TownID == town.TownId);
             }
 
             throw new HttpResponseException(HttpStatusCode.NotFound);
