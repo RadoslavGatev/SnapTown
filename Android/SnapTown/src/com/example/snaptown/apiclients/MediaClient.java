@@ -1,9 +1,11 @@
 package com.example.snaptown.apiclients;
 
+import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -13,21 +15,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.snaptown.helpers.ApiHelper;
 import com.example.snaptown.models.Media;
-import com.example.snaptown.models.Town;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.text.format.DateFormat;
 import android.util.Log;
 
 public class MediaClient {
@@ -38,6 +44,8 @@ public class MediaClient {
 
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
 			+ "/Media?authToken=%s&townId=%d&description=%s";
+
+	private static final String GetMediaRoute = ApiHelper.ApiUrl + "/Media/%d";
 	private static final String MediaByTownRoute = "media/%d?authToken=%s";
 
 	private static String lineEnd = "\r\n";
@@ -194,6 +202,79 @@ public class MediaClient {
 
 		String result = ApiHelper.get(routePath);
 		return parseMedia(result);
+	}
+
+	public static Bitmap getPhoto(int mediaId, int reqWidth, int reqHeight) {
+		Bitmap bitmap = null;
+		try {
+			// create HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// make GET request to the given URL
+			HttpResponse httpResponse = httpclient.execute(new HttpGet(String
+					.format(GetMediaRoute, mediaId)));
+
+			// receive response as inputStream
+			if (httpResponse.getEntity() != null) {
+				InputStream inputStream = null;
+				BufferedHttpEntity bufHttpEntity = new BufferedHttpEntity(
+						httpResponse.getEntity());
+
+				int buffersize = 16 * 1024;
+				inputStream = new BufferedInputStream(
+						bufHttpEntity.getContent(), buffersize);
+
+				if (inputStream != null
+						&& httpResponse.getStatusLine().getStatusCode() == 200) {
+
+					// First decode with inJustDecodeBounds=true to check
+					// dimensions
+					final BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inJustDecodeBounds = true;
+					BitmapFactory.decodeStream(inputStream, null, options);
+
+					// Calculate inSampleSize
+					options.inSampleSize = calculateInSampleSize(options,
+							reqWidth, reqHeight);
+
+					inputStream.reset();
+
+					// Decode bitmap with inSampleSize set
+					options.inJustDecodeBounds = false;
+					bitmap = BitmapFactory.decodeStream(inputStream, null,
+							options);
+					inputStream.close();
+					// bitmap = BitmapFactory.decodeStream(inputStream);
+				}
+			}
+		} catch (Exception e) {
+			Log.d("InputStream", e.getLocalizedMessage());
+		}
+
+		return bitmap;
+	}
+
+	private static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and
+			// keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
 	}
 
 	private static List<Media> parseMedia(String json) {
