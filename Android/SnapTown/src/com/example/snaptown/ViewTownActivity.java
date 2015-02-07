@@ -36,6 +36,10 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ViewTownActivity extends Activity {
+
+	public static final String EXTRA_TOWN_ID = "com.example.snaptown.townId";
+	public static final String EXTRA_TOWN_NAME = "com.example.snaptown.townName";
+
 	private Button newsFeedButton;
 	private TextView townNameTextView;
 	private ProgressBar loadProgress;
@@ -65,8 +69,8 @@ public class ViewTownActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			this.currentTownId = extras.getInt("townId");
-			String name = extras.getString("townName");
+			this.currentTownId = extras.getInt(EXTRA_TOWN_ID);
+			String name = extras.getString(EXTRA_TOWN_NAME);
 
 			townNameTextView.setText(name);
 		}
@@ -149,7 +153,7 @@ public class ViewTownActivity extends Activity {
 			viewHolder.userTextView.setText(currentTown.uploadedBy);
 			viewHolder.descriptionTextView.setText(currentTown.description);
 			Bitmap bitmap = images.get(currentTown.mediaId);
-			
+
 			if (bitmap == null) {
 				new LoadPhotoTask(images, currentTown.mediaId, viewHolder)
 						.execute(currentTown.mediaId);

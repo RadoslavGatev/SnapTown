@@ -142,7 +142,8 @@ public class TownsActivity extends Activity {
 
 		@Override
 		protected List<Town> doInBackground(Void... params) {
-			List<Town> subscribed = TownsClient.getAllSubscriptions("123");
+			List<Town> subscribed = TownsClient
+					.getAllSubscriptions(UserClient.currentUser.getAuthToken());
 			return subscribed;
 		}
 	}
@@ -217,10 +218,10 @@ public class TownsActivity extends Activity {
 				public void onClick(View v) {
 					Intent startViewTownActivity = new Intent(
 							TownsActivity.this, ViewTownActivity.class);
-					startViewTownActivity
-							.putExtra("townId", currentTown.townId);
-					startViewTownActivity
-							.putExtra("townName", currentTown.name);
+					startViewTownActivity.putExtra(
+							ViewTownActivity.EXTRA_TOWN_ID, currentTown.townId);
+					startViewTownActivity.putExtra(
+							ViewTownActivity.EXTRA_TOWN_NAME, currentTown.name);
 
 					startActivity(startViewTownActivity);
 				}

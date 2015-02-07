@@ -82,7 +82,7 @@ namespace SnapTown.WebService.Controllers
                             var fullPath = Path.Combine(filePath, media.Path);
                             image.Save(fullPath);
 
-                            notifyAllSubscribers(town);
+                            notifyAllSubscribers(town, user.Name);
                         }
                         catch (Exception e)
                         {
@@ -142,11 +142,11 @@ namespace SnapTown.WebService.Controllers
             var town = this.unitOfWork.Towns.Get(x => x.TownID == townId);
             if (town != null)
             {
-                notifyAllSubscribers(town);
+                notifyAllSubscribers(town, "Administrator");
             }
         }
 
-        private void notifyAllSubscribers(Town town)
+        private void notifyAllSubscribers(Town town, string senderName)
         {
             //TODO remove the current user
             var registrationIds = this.unitOfWork.Subscriptions
@@ -162,9 +162,10 @@ namespace SnapTown.WebService.Controllers
 
                 var obj = new
                 {
-                    msg = "New photo uploaded in " + town.Name,
+                    msg = senderName + " uploaded a new photo.",
                     townId = town.TownID,
-                    townName = town.Name
+                    townName = town.Name,
+                    senderName = senderName
                 };
 
                 var serializer = new JavaScriptSerializer();
