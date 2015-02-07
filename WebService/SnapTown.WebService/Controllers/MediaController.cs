@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Script.Serialization;
@@ -35,17 +36,15 @@ namespace SnapTown.WebService.Controllers
                 .Select(MediaConverter.AsMediaDto);
         }
 
-        public HttpResponseMessage Post(string authToken, int townId, string description)
+        public async Task<HttpResponseMessage> Post(string authToken, int townId, string description)
         {
-
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             if (Request.Content.IsMimeMultipartContent())
             {
                 var user = this.unitOfWork.Users.Get(x => x.AuthToken == authToken);
                 var town = this.unitOfWork.Towns.Get(x => x.TownID == townId);
 
-
-                Request.Content.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(
+                await Request.Content.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(
                     new MultipartMemoryStreamProvider()).ContinueWith(async (task) =>
                 {
                     MultipartMemoryStreamProvider provider = task.Result;
@@ -161,7 +160,13 @@ namespace SnapTown.WebService.Controllers
 
                 push.RegisterGcmService(new GcmPushChannelSettings("AIzaSyDZwSkJL1KowOSLWD9dgbJaY1qsqMTLsc8"));
 
-                var obj = new { msg = "Hello World" };
+                var obj = new
+                {
+                    msg = "New photo uploaded in " + town.Name,
+                    townId = town.TownID,
+                    townName = town.Name
+                };
+
                 var serializer = new JavaScriptSerializer();
                 var json = serializer.Serialize(obj);
 
