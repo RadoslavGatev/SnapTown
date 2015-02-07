@@ -155,6 +155,7 @@ public class ViewTownActivity extends Activity {
 			Bitmap bitmap = images.get(currentTown.mediaId);
 
 			if (bitmap == null) {
+				viewHolder.mediaImage.setImageResource(R.drawable.blank);
 				new LoadPhotoTask(images, currentTown.mediaId, viewHolder)
 						.execute(currentTown.mediaId);
 			} else {
