@@ -33,6 +33,7 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 	}
 
 	public void setDataSet(ArrayList<Media> mediaData) {
+		this.clear();
 		this.values.addAll(mediaData);
 		this.notifyDataSetChanged();
 	}
