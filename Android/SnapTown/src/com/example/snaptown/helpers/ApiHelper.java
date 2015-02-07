@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -13,10 +14,12 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
+
 import android.util.Log;
 
 public class ApiHelper {
-	public static final String ApiUrl = "http://192.168.1.101/snaptown/api";
+	public static final String ApiUrl = "http://192.168.1.104/snaptown/api";
 
 	public static String get(String url) {
 		return callService(new HttpGet(ApiUrl + "/" + url));
@@ -37,7 +40,8 @@ public class ApiHelper {
 			public void run() {
 				HttpPost post = new HttpPost(ApiUrl + "/" + url);
 				try {
-					StringEntity params = new StringEntity(jsonObject);
+					StringEntity params = new StringEntity(jsonObject,
+							HTTP.UTF_8);
 					post.setEntity(params);
 				} catch (Exception e) {
 				}
@@ -55,7 +59,7 @@ public class ApiHelper {
 		String result = "";
 		try {
 			request.setHeader("Accept", "application/json");
-			request.setHeader("Content-Type", "application/json");
+			request.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 			// create HttpClient
 			HttpClient httpclient = new DefaultHttpClient();
