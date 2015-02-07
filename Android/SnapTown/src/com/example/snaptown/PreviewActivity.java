@@ -75,21 +75,6 @@ public class PreviewActivity extends Activity implements
 					Bitmap imageBitmap = CaptureHelper.rotateFile(file
 							.getAbsolutePath());
 
-					ExifInterface ei = new ExifInterface(file.getAbsolutePath());
-					int orientation = ei.getAttributeInt(
-							ExifInterface.TAG_ORIENTATION,
-							ExifInterface.ORIENTATION_NORMAL);
-
-					switch (orientation) {
-					case ExifInterface.ORIENTATION_ROTATE_90:
-						imageBitmap = rotateBitmap(imageBitmap, 90);
-						break;
-					case ExifInterface.ORIENTATION_ROTATE_180:
-						imageBitmap = rotateBitmap(imageBitmap, 180);
-						break;
-					case ExifInterface.ORIENTATION_ROTATE_270:
-						imageBitmap = rotateBitmap(imageBitmap, 270);
-					}
 					capturedImageView.setImageBitmap(imageBitmap);
 					capturedImageView.setVisibility(View.VISIBLE);
 					capturedVideoView.setVisibility(View.GONE);
@@ -178,14 +163,6 @@ public class PreviewActivity extends Activity implements
 	@Override
 	public void locationChanged(Location loc) {
 		setLocationText(loc);
-	}
-
-
-	public static Bitmap rotateBitmap(Bitmap source, float angle) {
-		Matrix matrix = new Matrix();
-		matrix.postRotate(angle);
-		return Bitmap.createBitmap(source, 0, 0, source.getWidth(),
-				source.getHeight(), matrix, true);
 	}
 
 	private class GetTownTask extends AsyncTask<Double, Void, Town> {
