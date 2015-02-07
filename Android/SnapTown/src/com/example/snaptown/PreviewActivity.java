@@ -40,6 +40,7 @@ public class PreviewActivity extends Activity implements
 	private ImageView capturedImageView;
 	private VideoView capturedVideoView;
 	private Button postButton;
+	private EditText descriptionEditText;
 	private EditText locationEditText;
 	private ImageButton locationButton;
 	private boolean hasLocation = false;
@@ -58,6 +59,7 @@ public class PreviewActivity extends Activity implements
 		postButton = (Button) findViewById(R.id.preview_post_button);
 		locationEditText = (EditText) findViewById(R.id.location_edit_text);
 		locationButton = (ImageButton) findViewById(R.id.location_button);
+		descriptionEditText = (EditText) findViewById(R.id.description_edittext);
 
 		locationEditText.setText("");
 		hasLocation = false;
@@ -72,6 +74,22 @@ public class PreviewActivity extends Activity implements
 				try {
 					Bitmap imageBitmap = CaptureHelper.rotateFile(file
 							.getAbsolutePath());
+
+					ExifInterface ei = new ExifInterface(file.getAbsolutePath());
+					int orientation = ei.getAttributeInt(
+							ExifInterface.TAG_ORIENTATION,
+							ExifInterface.ORIENTATION_NORMAL);
+
+					switch (orientation) {
+					case ExifInterface.ORIENTATION_ROTATE_90:
+						imageBitmap = rotateBitmap(imageBitmap, 90);
+						break;
+					case ExifInterface.ORIENTATION_ROTATE_180:
+						imageBitmap = rotateBitmap(imageBitmap, 180);
+						break;
+					case ExifInterface.ORIENTATION_ROTATE_270:
+						imageBitmap = rotateBitmap(imageBitmap, 270);
+					}
 					capturedImageView.setImageBitmap(imageBitmap);
 					capturedImageView.setVisibility(View.VISIBLE);
 					capturedVideoView.setVisibility(View.GONE);
@@ -97,7 +115,9 @@ public class PreviewActivity extends Activity implements
 				if (filePath != null) {
 					ContentType type = (isImage ? ContentType.JPEG
 							: ContentType.MP4);
-					MediaClient.uploadFile(filePath, type);
+					String description = descriptionEditText.getText()
+							.toString();
+					MediaClient.uploadFile(filePath, type, description);
 					Toast.makeText(
 							PreviewActivity.this.getApplicationContext(),
 							"Your post was successful", Toast.LENGTH_SHORT)
@@ -158,6 +178,14 @@ public class PreviewActivity extends Activity implements
 	@Override
 	public void locationChanged(Location loc) {
 		setLocationText(loc);
+	}
+
+
+	public static Bitmap rotateBitmap(Bitmap source, float angle) {
+		Matrix matrix = new Matrix();
+		matrix.postRotate(angle);
+		return Bitmap.createBitmap(source, 0, 0, source.getWidth(),
+				source.getHeight(), matrix, true);
 	}
 
 	private class GetTownTask extends AsyncTask<Double, Void, Town> {

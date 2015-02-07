@@ -44,7 +44,7 @@ public class MediaClient {
 	}
 
 	public static int TownId = 0;
-	
+
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
 			+ "/Media?authToken=%s&townId=%d&description=%s";
 
@@ -58,7 +58,7 @@ public class MediaClient {
 	private static int maxBufferSize = 1 * 1024 * 1024;
 
 	public static void uploadFile(final String sourceFileUri,
-			final ContentType type) {
+			final ContentType type, final String description) {
 		if (TownId > 0) {
 			new Thread(new Runnable() {
 				public void run() {
@@ -77,8 +77,8 @@ public class MediaClient {
 							FileInputStream fileInputStream = new FileInputStream(
 									sourceFile);
 							URL url = new URL(String.format(UPLOAD_SERVER_URI,
-									UserClient.currentUser.getAuthToken(), TownId,
-									"uploaded:)"));
+									UserClient.currentUser.getAuthToken(),
+									TownId, description));
 							// Open a HTTP connection to the URL
 							conn = initConnection(fileName, boundary, url);
 
@@ -252,7 +252,7 @@ public class MediaClient {
 					options.inSampleSize = calculateInSampleSize(options,
 							reqWidth, reqHeight);
 
-//					inputStream.reset();
+					// inputStream.reset();
 
 					// Decode bitmap with inSampleSize set
 					options.inJustDecodeBounds = false;
