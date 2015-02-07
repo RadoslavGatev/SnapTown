@@ -6,9 +6,9 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,6 +142,7 @@ public class TownsActivity extends Activity {
 
 		@Override
 		protected List<Town> doInBackground(Void... params) {
+			Log.d("CurrentUser", UserClient.currentUser.toString());
 			List<Town> subscribed = TownsClient
 					.getAllSubscriptions(UserClient.currentUser.getAuthToken());
 			return subscribed;
