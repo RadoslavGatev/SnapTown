@@ -17,7 +17,6 @@ import com.example.snaptown.apiclients.UserClient;
 import com.example.snaptown.controls.CaptureControlsView;
 import com.example.snaptown.helpers.CaptureHelper;
 import com.example.snaptown.models.Media;
-import com.example.snaptown.utilities.LoadMediaTask;
 import com.example.snaptown.utilities.LoadNewsFeedTask;
 import com.facebook.Session;
 

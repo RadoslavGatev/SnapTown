@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -294,7 +295,7 @@ public class MediaClient {
 
 				String stringDate = entry.getString("UploadedOn");
 				SimpleDateFormat format = new SimpleDateFormat(
-						"MM/dd/yyyy HH:mm:ss");
+						"MM/dd/yyyy HH:mm:ss", Locale.getDefault());
 				Date date = null;
 				try {
 					date = format.parse(stringDate);
@@ -305,7 +306,8 @@ public class MediaClient {
 
 				Media media = new Media(entry.getInt("MediaId"),
 						entry.getString("Description"), date,
-						entry.getString("UploadedBy"));
+						entry.getString("UploadedBy"),
+						entry.getString("TownName"), entry.getInt("TownId"));
 				towns.add(media);
 			}
 		} catch (JSONException e) {

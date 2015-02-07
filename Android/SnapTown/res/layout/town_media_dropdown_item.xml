@@ -3,18 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:showDividers="middle" >
 
     <TextView
         android:id="@+id/user_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_item_margin_vertical"
         android:textAppearance="?android:attr/textAppearanceLargePopupMenu" />
 
     <TextView
         android:id="@+id/date_posted_textview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/date_gray"/>
 
     <TextView
         android:id="@+id/description_textview"
@@ -27,6 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/list_item_margin_vertical"
+        android:layout_marginTop="@dimen/list_item_margin_vertical"
         android:src="@drawable/blank" />
 
 </LinearLayout>

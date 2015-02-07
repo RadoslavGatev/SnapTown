@@ -16,7 +16,8 @@
         android:id="@+id/town_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/title_size" />
 
     <ProgressBar
         android:id="@+id/load_progress"
@@ -29,8 +30,7 @@
         android:id="@+id/townFeed_listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-       
-        android:dividerHeight="10.0sp" >
+        android:dividerHeight="@dimen/divider_height" >
     </ListView>
 
 </LinearLayout>

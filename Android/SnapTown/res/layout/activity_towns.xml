@@ -19,7 +19,8 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin" >
 
             <EditText
                 android:id="@+id/town_search_edittext"
@@ -33,9 +34,9 @@
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/town_search_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:layout_below="@id/town_search_edittext"
                 android:visibility="visible" />
 
             <Button
@@ -49,7 +50,7 @@
         <ListView
             android:id="@+id/subscribed_towns_listview"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
         </ListView>
     </LinearLayout>
 

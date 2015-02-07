@@ -27,7 +27,8 @@
         <ListView
             android:id="@+id/news_feed_listview"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent"
+            android:dividerHeight="@dimen/divider_height" >
         </ListView>
     </LinearLayout>
 
