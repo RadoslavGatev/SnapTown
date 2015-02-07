@@ -63,9 +63,10 @@ public class NewsFeedActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		new LoadNewsFeedTask(progressBar, newsFeedAdapter)
-				.execute(UserClient.currentUser.getAuthToken());
+		if (UserClient.currentUser != null) {
+			new LoadNewsFeedTask(progressBar, newsFeedAdapter)
+					.execute(UserClient.currentUser.getAuthToken());
+		}
 	}
 
 	@Override
