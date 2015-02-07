@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.WebService", "SnapTown.WebService\SnapTown.WebService.csproj", "{76B3A0D3-048E-4D24-A63B-4F2ADE16A224}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.Models", "SnapTown.Models\SnapTown.Models.csproj", "{B27E1775-F86C-4C0C-AA0A-CD3BCFB10030}"
@@ -12,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.DTO", "SnapTown.DTO\SnapTown.DTO.csproj", "{37D6D598-1E43-4FAC-A5D0-57C097BF68EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnapTown.Utils", "SnapTown.Utils\SnapTown.Utils.csproj", "{0957F5A5-2671-4F5B-84B5-671429B6ADE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4648B017-A6B7-4986-87D2-7F11A34C556A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

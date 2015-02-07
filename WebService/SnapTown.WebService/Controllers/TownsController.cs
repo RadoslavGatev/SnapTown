@@ -3,6 +3,8 @@ using SnapTown.DTO;
 using SnapTown.Models;
 using SnapTown.WebService.Converters;
 using System;
+using System.Data.Entity.Spatial;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -48,6 +50,29 @@ namespace SnapTown.WebService.Controllers
             }
 
             return TownConverter.AsTownDto.Compile().Invoke(town);
+        }
+
+        [Route("location/{latitude:double};{longitude:double}")]
+        public object GetIdByCoordinates(double latitude, double longitude)
+        {
+            var text = string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", longitude, latitude);
+            var currentPoint = DbGeography.PointFromText(text, DbGeography.DefaultCoordinateSystemId);
+
+            var town = this.unitOfWork.Towns.All()
+                .Where(t => t.Location.Distance(currentPoint) < 500000)
+                .Select(t => new
+                {
+                    TownId = t.TownID,
+                    Distance = t.Location.Distance(currentPoint)
+                })
+                .OrderByDescending(t => t.Distance)
+                .FirstOrDefault();
+            if (town != null)
+            {
+                return new { townId = town.TownId };
+            }
+
+            throw new HttpResponseException(HttpStatusCode.NotFound);
         }
 
         [Route("{townId:int}/subscribe")]
