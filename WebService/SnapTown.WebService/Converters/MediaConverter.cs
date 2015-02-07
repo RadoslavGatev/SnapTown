@@ -17,7 +17,9 @@ namespace SnapTown.WebService.Converters
                 Description = x.Description,
                 Type = (byte)x.Type,
                 UploadedBy = x.Owner.Name,
-                UploadedOn = x.UploadedOn
+                UploadedOn = x.UploadedOn,
+                TownId = x.TownID,
+                TownName = x.Town.Name
             };
     }
 }

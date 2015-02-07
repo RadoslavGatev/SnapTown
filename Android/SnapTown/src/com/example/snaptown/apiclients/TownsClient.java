@@ -36,13 +36,13 @@ public class TownsClient {
 	public static void subscribeForTown(int townId, String authToken) {
 		String routePath = String.format(SubscribeRoute, townId, authToken);
 
-		String result = ApiHelper.post(routePath);
+		ApiHelper.post(routePath);
 	}
 
 	public static void unsubscribeForTown(int townId, String authToken) {
 		String routePath = String.format(SubscribeRoute, townId, authToken);
 
-		String result = ApiHelper.delete(routePath);
+		ApiHelper.delete(routePath);
 	}
 
 	public static Town getTownOnLocation(double latitude, double longitude){

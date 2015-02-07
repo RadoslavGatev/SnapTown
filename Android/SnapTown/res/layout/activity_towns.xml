@@ -19,23 +19,24 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin" >
 
             <EditText
                 android:id="@+id/town_search_edittext"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/search_button"
-                android:hint="Search" />
+                android:hint="@string/search_button_text" />
 
             <ProgressBar
                 android:id="@+id/loading_indicator_progressbar"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/town_search_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:layout_below="@id/town_search_edittext"
                 android:visibility="visible" />
 
             <Button
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Search" />
+                android:text="@string/search_button_text" />
         </RelativeLayout>
 
         <ListView

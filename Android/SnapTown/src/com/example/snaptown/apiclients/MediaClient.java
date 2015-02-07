@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -49,6 +50,7 @@ public class MediaClient {
 
 	private static final String GetMediaRoute = ApiHelper.ApiUrl + "/Media/%d";
 	private static final String MediaByTownRoute = "media/%d?authToken=%s";
+	private static final String NewsFeedRoute = "media/?authToken=%s";
 
 	private static String lineEnd = "\r\n";
 	private static String twoHyphens = "--";
@@ -208,6 +210,13 @@ public class MediaClient {
 		return parseMedia(result);
 	}
 
+	public static List<Media> getNewsFeed(String authToken) {
+		String routePath = String.format(NewsFeedRoute, authToken);
+
+		String result = ApiHelper.get(routePath);
+		return parseMedia(result);
+	}
+
 	public static Bitmap getPhoto(int mediaId, int reqWidth, int reqHeight) {
 		Bitmap bitmap = null;
 		try {
@@ -290,7 +299,7 @@ public class MediaClient {
 
 				String stringDate = entry.getString("UploadedOn");
 				SimpleDateFormat format = new SimpleDateFormat(
-						"MM/dd/yyyy HH:mm:ss");
+						"MM/dd/yyyy HH:mm:ss", Locale.getDefault());
 				Date date = null;
 				try {
 					date = format.parse(stringDate);
@@ -301,7 +310,8 @@ public class MediaClient {
 
 				Media media = new Media(entry.getInt("MediaId"),
 						entry.getString("Description"), date,
-						entry.getString("UploadedBy"));
+						entry.getString("UploadedBy"),
+						entry.getString("TownName"), entry.getInt("TownId"));
 				towns.add(media);
 			}
 		} catch (JSONException e) {

@@ -1,5 +1,7 @@
 package com.example.snaptown;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +9,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.example.snaptown.adapters.MediaArrayAdapter;
+import com.example.snaptown.apiclients.UserClient;
 import com.example.snaptown.controls.CaptureControlsView;
 import com.example.snaptown.helpers.CaptureHelper;
+import com.example.snaptown.models.Media;
+import com.example.snaptown.utilities.LoadNewsFeedTask;
 import com.facebook.Session;
 
 public class NewsFeedActivity extends Activity {
 
 	private Button townsButton;
 	private CaptureControlsView captureControls;
+	private ListView newsFeedListView;
+	private MediaArrayAdapter newsFeedAdapter;
+	private ProgressBar progressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +45,27 @@ public class NewsFeedActivity extends Activity {
 			}
 		});
 
+		newsFeedListView = (ListView) findViewById(R.id.news_feed_listview);
+		newsFeedAdapter = new MediaArrayAdapter(this, new ArrayList<Media>());
+		newsFeedAdapter.isNewsFeed(true);
+
+		newsFeedListView.setAdapter(newsFeedAdapter);
+
+		progressBar = (ProgressBar) findViewById(R.id.news_feed_progressbar);
+
 		captureControls = (CaptureControlsView) findViewById(R.id.capture_controls);
 		captureControls.setPictureButtonOnClickListener(CaptureHelper
 				.getImageOnClickListener(this));
 		captureControls.setVideoButtonOnClickListener(CaptureHelper
 				.getVideoOnClickListener(this));
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		new LoadNewsFeedTask(progressBar, newsFeedAdapter)
+				.execute(UserClient.currentUser.getAuthToken());
 	}
 
 	@Override

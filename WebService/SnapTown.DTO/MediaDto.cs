@@ -14,5 +14,7 @@ namespace SnapTown.DTO
         public byte Type { get; set; }
         public DateTime UploadedOn { get; set; }
         public string UploadedBy { get; set; }
+        public string TownName { get; set; }
+        public int TownId { get; set; }
     }
 }

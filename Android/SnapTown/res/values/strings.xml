@@ -13,5 +13,6 @@
     <string name="title_facebook_login">Facebook Login</string>
     <string name="action_logout">Logout</string>
     <string name="title_activity_view_town">ViewTownActivity</string>
+    <string name="search_button_text">Search</string>
 
 </resources>
