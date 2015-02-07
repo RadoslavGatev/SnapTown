@@ -80,8 +80,11 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 		} else {
 			viewHolder.userTextView.setText(currentTown.uploadedBy);
 		}
-		viewHolder.datePostedTextView.setText(DateFormat.format(
-				"dd MMM yyyy HH:mm", currentTown.uploadedOn));
+		if (currentTown.uploadedOn != null) {
+			viewHolder.datePostedTextView.setText(DateFormat.format(
+					"dd MMM yyyy HH:mm", currentTown.uploadedOn));
+		}
+		
 		viewHolder.descriptionTextView.setText(currentTown.description);
 		Bitmap bitmap = images.get(currentTown.mediaId);
 
