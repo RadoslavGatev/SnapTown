@@ -53,6 +53,7 @@ public class MediaArrayAdapter extends ArrayAdapter<Media> {
 			// just use the viewHolder
 			viewHolder = (DisplayMediaViewHolder) convertView.getTag();
 		}
+		
 		viewHolder.mediaImage.setImageResource(R.drawable.blank);
 
 		// object item based on the position

@@ -1,32 +1,22 @@
 package com.example.snaptown;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import com.example.snaptown.apiclients.TownsClient;
-import com.example.snaptown.apiclients.UserClient;
+import com.example.snaptown.adapters.TownsAdapter;
 import com.example.snaptown.models.Town;
+import com.example.snaptown.utilities.GetSubscribedListTask;
+import com.example.snaptown.utilities.SearchTownTask;
 import com.facebook.Session;
 import com.example.snaptown.R;
 
@@ -37,6 +27,7 @@ public class TownsActivity extends Activity {
 	private ListView subscribedTownsListView;
 	private EditText searchTownEditText;
 	private ProgressBar progressBar;
+	private TownsAdapter townsAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +39,18 @@ public class TownsActivity extends Activity {
 		searchTownEditText = (EditText) findViewById(R.id.town_search_edittext);
 		progressBar = (ProgressBar) findViewById(R.id.loading_indicator_progressbar);
 
+		townsAdapter = new TownsAdapter(this, new ArrayList<Town>());
+		subscribedTownsListView.setAdapter(townsAdapter);
+
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				String query = searchTownEditText.getText().toString();
 				if (!query.isEmpty()) {
-					new SearchTownTask().execute(query);
+					new SearchTownTask(progressBar, townsAdapter)
+							.execute(query);
 				} else {
-					new GetSubscibedListTask().execute();
+					new GetSubscribedListTask(progressBar, townsAdapter)
+							.execute();
 				}
 
 			}
@@ -78,7 +74,7 @@ public class TownsActivity extends Activity {
 		super.onResume();
 
 		if (searchTownEditText.getText().toString().isEmpty()) {
-			new GetSubscibedListTask().execute();
+			new GetSubscribedListTask(progressBar, townsAdapter).execute();
 		}
 	}
 
@@ -125,114 +121,6 @@ public class TownsActivity extends Activity {
 		startMain.addCategory(Intent.CATEGORY_HOME);
 		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(startMain);
-	}
-
-	private class GetSubscibedListTask extends
-			AsyncTask<Void, Void, List<Town>> {
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-		}
-
-		protected void onPostExecute(List<Town> result) {
-			subscribedTownsListView.setAdapter(new MySimpleArrayAdapter(
-					TownsActivity.this, (ArrayList<Town>) result));
-
-			progressBar.setVisibility(View.GONE);
-		}
-
-		@Override
-		protected List<Town> doInBackground(Void... params) {
-			Log.d("CurrentUser", UserClient.currentUser.toString());
-			List<Town> subscribed = TownsClient
-					.getAllSubscriptions(UserClient.currentUser.getAuthToken());
-			return subscribed;
-		}
-	}
-
-	private class SearchTownTask extends AsyncTask<String, Void, List<Town>> {
-		protected void onPreExecute() {
-			progressBar.setVisibility(View.VISIBLE);
-		}
-
-		protected void onPostExecute(List<Town> result) {
-			subscribedTownsListView.setAdapter(new MySimpleArrayAdapter(
-					TownsActivity.this, (ArrayList<Town>) result));
-
-			progressBar.setVisibility(View.GONE);
-		}
-
-		@Override
-		protected List<Town> doInBackground(String... params) {
-			List<Town> foundTowns = TownsClient.getAutocomplete(params[0], 10,
-					UserClient.currentUser.getAuthToken());
-			return foundTowns;
-		}
-	}
-
-	public class MySimpleArrayAdapter extends ArrayAdapter<Town> {
-		private final Context context;
-		private final ArrayList<Town> values;
-
-		public MySimpleArrayAdapter(Context context, ArrayList<Town> values) {
-			super(context, 0, values);
-			this.context = context;
-			this.values = values;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.town_dropdown_item_toggle,
-					parent, false);
-			TextView textView = (TextView) rowView
-					.findViewById(R.id.town_name_textview);
-			ToggleButton subscribeButton = (ToggleButton) rowView
-					.findViewById(R.id.subscribe_togglebutton);
-			final Town currentTown = values.get(position);
-
-			subscribeButton.setChecked(currentTown.isSubscribed);
-			subscribeButton
-					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-						public void onCheckedChanged(CompoundButton buttonView,
-								final boolean isChecked) {
-
-							new Thread(new Runnable() {
-								public void run() {
-									if (isChecked) {
-										TownsClient.subscribeForTown(
-												currentTown.townId,
-												UserClient.currentUser
-														.getAuthToken());
-									} else {
-										TownsClient.unsubscribeForTown(
-												currentTown.townId,
-												UserClient.currentUser
-														.getAuthToken());
-									}
-								}
-							}).start();
-						}
-					});
-
-			rowView.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					Intent startViewTownActivity = new Intent(
-							TownsActivity.this, ViewTownActivity.class);
-					startViewTownActivity.putExtra(
-							ViewTownActivity.EXTRA_TOWN_ID, currentTown.townId);
-					startViewTownActivity.putExtra(
-							ViewTownActivity.EXTRA_TOWN_NAME, currentTown.name);
-
-					startActivity(startViewTownActivity);
-				}
-			});
-
-			textView.setText(currentTown.name);
-
-			rowView.setTag(currentTown);
-			return rowView;
-		}
 	}
 
 }
