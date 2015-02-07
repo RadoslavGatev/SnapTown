@@ -229,11 +229,14 @@ public class MediaClient {
 			// receive response as inputStream
 			if (httpResponse.getEntity() != null) {
 				InputStream inputStream = null;
+				InputStream inputStream1 = null;
 				BufferedHttpEntity bufHttpEntity = new BufferedHttpEntity(
 						httpResponse.getEntity());
 
 				int buffersize = 16 * 1024;
 				inputStream = new BufferedInputStream(
+						bufHttpEntity.getContent(), buffersize);
+				inputStream1 = new BufferedInputStream(
 						bufHttpEntity.getContent(), buffersize);
 
 				if (inputStream != null
@@ -249,13 +252,14 @@ public class MediaClient {
 					options.inSampleSize = calculateInSampleSize(options,
 							reqWidth, reqHeight);
 
-					inputStream.reset();
+//					inputStream.reset();
 
 					// Decode bitmap with inSampleSize set
 					options.inJustDecodeBounds = false;
-					bitmap = BitmapFactory.decodeStream(inputStream, null,
+					bitmap = BitmapFactory.decodeStream(inputStream1, null,
 							options);
 					inputStream.close();
+					inputStream1.close();
 					// bitmap = BitmapFactory.decodeStream(inputStream);
 				}
 			}
