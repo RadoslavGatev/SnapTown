@@ -47,6 +47,8 @@ public class CaptureHelper {
 						// Error occurred while creating the File
 					}
 					if (photoFile != null) {
+						LocationHelper.initLocationHelper(activity.getApplicationContext());
+						LocationHelper.startListening();
 						intent.putExtra(MediaStore.EXTRA_OUTPUT,
 								Uri.fromFile(photoFile));
 						activity.startActivityForResult(intent,
@@ -75,6 +77,8 @@ public class CaptureHelper {
 						// TODO: handle exception
 					}
 					if (videoFile != null) {
+						LocationHelper.initLocationHelper(activity.getApplicationContext());
+						LocationHelper.startListening();
 						intent.putExtra(MediaStore.EXTRA_OUTPUT,
 								Uri.fromFile(videoFile));
 						activity.startActivityForResult(intent,

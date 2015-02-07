@@ -4,23 +4,34 @@ import java.io.File;
 
 import com.example.snaptown.apiclients.MediaClient;
 import com.example.snaptown.apiclients.MediaClient.ContentType;
+import com.example.snaptown.apiclients.TownsClient;
+import com.example.snaptown.helpers.LocationHelper;
+import com.example.snaptown.models.Town;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
-public class PreviewActivity extends Activity {
+public class PreviewActivity extends Activity implements
+		LocationHelper.LocListener {
 
 	public static final String EXTRA_IS_IMAGE = "com.example.snaptown.IsImage";
 	public static final String EXTRA_FILE_PATH = "com.example.snaptown.FilePath";
@@ -28,17 +39,28 @@ public class PreviewActivity extends Activity {
 	private ImageView capturedImageView;
 	private VideoView capturedVideoView;
 	private Button postButton;
+	private EditText locationEditText;
+	private ImageButton locationButton;
+	private boolean hasLocation = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preview);
 
+		LocationHelper.addLocListener(this);
+
 		Bundle extras = getIntent().getExtras();
 
 		capturedImageView = (ImageView) findViewById(R.id.captured_image_view);
 		capturedVideoView = (VideoView) findViewById(R.id.captured_video_view);
 		postButton = (Button) findViewById(R.id.preview_post_button);
+		locationEditText = (EditText) findViewById(R.id.location_edit_text);
+		locationButton = (ImageButton) findViewById(R.id.location_button);
+
+		locationEditText.setText("");
+		hasLocation = false;
+		setLocationText(LocationHelper.getLatestLocation(this));
 
 		final boolean isImage = extras.getBoolean(EXTRA_IS_IMAGE);
 		final String filePath = extras.getString(EXTRA_FILE_PATH);
@@ -46,11 +68,29 @@ public class PreviewActivity extends Activity {
 		File file = new File(filePath);
 		if (file.exists()) {
 			if (isImage) {
-				Bitmap imageBitmap = BitmapFactory.decodeFile(file
-						.getAbsolutePath());
-				capturedImageView.setImageBitmap(imageBitmap);
-				capturedImageView.setVisibility(View.VISIBLE);
-				capturedVideoView.setVisibility(View.GONE);
+				try {
+					Bitmap imageBitmap = BitmapFactory.decodeFile(file
+							.getAbsolutePath());
+					ExifInterface ei = new ExifInterface(file
+							.getAbsolutePath());
+					int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+					switch(orientation) {
+					    case ExifInterface.ORIENTATION_ROTATE_90:
+					    	imageBitmap = rotateBitmap(imageBitmap, 90);
+					        break;
+					    case ExifInterface.ORIENTATION_ROTATE_180:
+					    	imageBitmap = rotateBitmap(imageBitmap, 180);
+					        break;
+					    case ExifInterface.ORIENTATION_ROTATE_270:
+					    	imageBitmap = rotateBitmap(imageBitmap, 270);
+					}
+					capturedImageView.setImageBitmap(imageBitmap);
+					capturedImageView.setVisibility(View.VISIBLE);
+					capturedVideoView.setVisibility(View.GONE);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			} else {
 				Uri videoUri = Uri.fromFile(file);
 				capturedVideoView.setVideoURI(videoUri);
@@ -60,6 +100,8 @@ public class PreviewActivity extends Activity {
 				capturedVideoView.requestFocus();
 			}
 		}
+
+		postButton.setEnabled(false);
 		postButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -69,7 +111,23 @@ public class PreviewActivity extends Activity {
 					ContentType type = (isImage ? ContentType.JPEG
 							: ContentType.MP4);
 					MediaClient.uploadFile(filePath, type);
+					LocationHelper.stopListening();
+					Toast.makeText(
+							PreviewActivity.this.getApplicationContext(),
+							"Your post was successful", Toast.LENGTH_SHORT)
+							.show();
+					onBackPressed();
 				}
+			}
+		});
+
+		locationButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				hasLocation = false;
+				setLocationText(LocationHelper
+						.getLatestLocation(PreviewActivity.this));
 			}
 		});
 	}
@@ -99,5 +157,42 @@ public class PreviewActivity extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);
 		this.finish();
+	}
+
+	private void setLocationText(Location loc) {
+		if (loc != null && !hasLocation) {
+			hasLocation = true;
+			double latitude = loc.getLatitude();
+			double longitude = loc.getLongitude();
+			new GetTownTask().execute(latitude, longitude);
+		}
+	}
+
+	@Override
+	public void locationChanged(Location loc) {
+		setLocationText(loc);
+	}
+
+	public static Bitmap rotateBitmap(Bitmap source, float angle)
+	{
+	      Matrix matrix = new Matrix();
+	      matrix.postRotate(angle);
+	      return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+	}
+	
+	private class GetTownTask extends AsyncTask<Double, Void, Town> {
+		@Override
+		protected Town doInBackground(Double... params) {
+			return TownsClient.getTownOnLocation(params[0], params[1]);
+		}
+
+		@Override
+		protected void onPostExecute(Town town) {
+			if (town != null && locationEditText != null && postButton != null) {
+				locationEditText.setText(town.getName());
+				MediaClient.TownId = town.townId;
+				postButton.setEnabled(true);
+			}
+		}
 	}
 }

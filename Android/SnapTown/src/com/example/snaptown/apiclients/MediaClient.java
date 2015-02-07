@@ -42,6 +42,8 @@ public class MediaClient {
 		JPEG, MP4
 	}
 
+	public static int TownId = 0;
+	
 	private static final String UPLOAD_SERVER_URI = ApiHelper.ApiUrl
 			+ "/Media?authToken=%s&townId=%d&description=%s";
 
@@ -55,59 +57,61 @@ public class MediaClient {
 
 	public static void uploadFile(final String sourceFileUri,
 			final ContentType type) {
-		new Thread(new Runnable() {
-			public void run() {
-				String fileName = sourceFileUri;
-				HttpURLConnection conn = null;
-				DataOutputStream dos = null;
-				int serverResponseCode = 0;
-				File sourceFile = new File(sourceFileUri);
+		if (TownId > 0) {
+			new Thread(new Runnable() {
+				public void run() {
+					String fileName = sourceFileUri;
+					HttpURLConnection conn = null;
+					DataOutputStream dos = null;
+					int serverResponseCode = 0;
+					File sourceFile = new File(sourceFileUri);
 
-				if (!sourceFile.isFile()) {
-					Log.e("uploadFile", "Source File not exist :"
-							+ sourceFileUri);
-				} else {
-					try {
-						// open a URL connection to the Servlet
-						FileInputStream fileInputStream = new FileInputStream(
-								sourceFile);
-						URL url = new URL(String.format(UPLOAD_SERVER_URI,
-								UserClient.currentUser.getAuthToken(), 3,
-								"uploaded:)"));
-						// Open a HTTP connection to the URL
-						conn = initConnection(fileName, boundary, url);
+					if (!sourceFile.isFile()) {
+						Log.e("uploadFile", "Source File not exist :"
+								+ sourceFileUri);
+					} else {
+						try {
+							// open a URL connection to the Servlet
+							FileInputStream fileInputStream = new FileInputStream(
+									sourceFile);
+							URL url = new URL(String.format(UPLOAD_SERVER_URI,
+									UserClient.currentUser.getAuthToken(), TownId,
+									"uploaded:)"));
+							// Open a HTTP connection to the URL
+							conn = initConnection(fileName, boundary, url);
 
-						dos = new DataOutputStream(conn.getOutputStream());
+							dos = new DataOutputStream(conn.getOutputStream());
 
-						writeToStream(type, sourceFile.getName(), dos,
-								fileInputStream);
+							writeToStream(type, sourceFile.getName(), dos,
+									fileInputStream);
 
-						// Responses from the server (code and message)
-						serverResponseCode = conn.getResponseCode();
-						String serverResponseMessage = conn
-								.getResponseMessage();
+							// Responses from the server (code and message)
+							serverResponseCode = conn.getResponseCode();
+							String serverResponseMessage = conn
+									.getResponseMessage();
 
-						Log.i("uploadFile", "HTTP Response is : "
-								+ serverResponseMessage + ": "
-								+ serverResponseCode);
+							Log.i("uploadFile", "HTTP Response is : "
+									+ serverResponseMessage + ": "
+									+ serverResponseCode);
 
-						if (serverResponseCode == 200) {
-							// File Upload Completed
+							if (serverResponseCode == 200) {
+								// File Upload Completed
+							}
+
+							// close the streams //
+							fileInputStream.close();
+							dos.flush();
+							dos.close();
+
+						} catch (MalformedURLException ex) {
+							ex.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-
-						// close the streams //
-						fileInputStream.close();
-						dos.flush();
-						dos.close();
-
-					} catch (MalformedURLException ex) {
-						ex.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 
 	private static HttpURLConnection initConnection(String fileName,

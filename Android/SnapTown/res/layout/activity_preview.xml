@@ -42,9 +42,11 @@
                 android:layout_height="wrap_content" >
 
                 <EditText
+                    android:id="@+id/location_edit_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/location_button"
+                    android:enabled="false"
                     android:hint="Location" />
 
                 <ImageButton

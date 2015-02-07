@@ -15,6 +15,7 @@ public class TownsClient {
 	public static final String AutoCompleteRoute = "autocomplete/towns/%s?$top=%d&authToken=%s";
 	public static final String SubscribedTownsRoute = "towns/?authToken=%s";
 	public static final String SubscribeRoute = "towns/%d/subscribe?authToken=%s";
+	public static final String LocationRoute = "towns/location/%s;%s/";
 
 	public static List<Town> getAutocomplete(String query, int maxResults,
 			String authToken) {
@@ -42,6 +43,24 @@ public class TownsClient {
 		String routePath = String.format(SubscribeRoute, townId, authToken);
 
 		String result = ApiHelper.delete(routePath);
+	}
+
+	public static Town getTownOnLocation(double latitude, double longitude){
+		String result = ApiHelper.get(String.format(LocationRoute, latitude, longitude));
+		
+		try {
+			JSONObject entry = new JSONObject(result);
+			Town town = new Town(entry.getInt("TownID"),
+					entry.getString("Name"), entry.getString("Country"),
+					entry.optBoolean("IsSubscribed"));
+			
+			return town;
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	private static List<Town> parseTowns(String json) {

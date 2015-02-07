@@ -19,7 +19,7 @@ import org.apache.http.protocol.HTTP;
 import android.util.Log;
 
 public class ApiHelper {
-	public static final String ApiUrl = "http://192.168.1.104/snaptown/api";
+	public static final String ApiUrl = "http://192.168.1.101/snaptown/api";
 
 	public static String get(String url) {
 		return callService(new HttpGet(ApiUrl + "/" + url));
@@ -79,7 +79,7 @@ public class ApiHelper {
 			// convert inputstream to string
 
 		} catch (Exception e) {
-			Log.d("InputStream", e.getLocalizedMessage());
+			Log.d("InputStream", e.getMessage());
 		}
 
 		return result;
