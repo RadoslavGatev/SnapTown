@@ -19,7 +19,7 @@ import org.apache.http.protocol.HTTP;
 import android.util.Log;
 
 public class ApiHelper {
-	public static final String ApiUrl = "http://192.168.1.101/snaptown/api";
+	public static final String ApiUrl = "http://10.255.5.7/snaptown/api";
 
 	public static String get(String url) {
 		return callService(new HttpGet(ApiUrl + "/" + url));
@@ -34,20 +34,15 @@ public class ApiHelper {
 	}
 
 	public static void post(final String url, final String jsonObject) {
-		new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				HttpPost post = new HttpPost(ApiUrl + "/" + url);
-				try {
-					StringEntity params = new StringEntity(jsonObject,
-							HTTP.UTF_8);
-					post.setEntity(params);
-				} catch (Exception e) {
-				}
-				callService(post);
-			}
-		}).start();
+		HttpPost post = new HttpPost(ApiUrl + "/" + url);
+		try {
+			StringEntity params = new StringEntity(jsonObject, HTTP.UTF_8);
+			post.setEntity(params);
+		} catch (Exception e) {
+		}
+		callService(post);
+
 	}
 
 	public static String delete(String url) {
@@ -79,7 +74,9 @@ public class ApiHelper {
 			// convert inputstream to string
 
 		} catch (Exception e) {
-			Log.d("InputStream", e.getMessage());
+			if (e.getMessage() != null) {
+				Log.d("InputStream", e.getMessage());
+			}
 		}
 
 		return result;
